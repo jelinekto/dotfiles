@@ -1,0 +1,20 @@
+@import url("firefox-csshacks/chrome/autohide_main_toolbar.css");
+@import url("firefox-csshacks/chrome/iconized_main_menu.css");
+@import url("firefox-csshacks/chrome/inline_tab_audio_icons.css");
+@import url("firefox-csshacks/chrome/numbered_tabs.css");
+
+/* actually compact effing tabs */
+:root { --tab-min-height: 1px !important; }
+.tab-label-container{ height: unset !important }
+#tabbrowser-tabs .tabbrowser-tab .tab-close-button { display:none!important; }
+
+/* speed autohide_main_toolbar.css animations up a bit */
+#nav-bar:not([customizing]){
+  transition:  transform 200ms ease 0.25s, opacity 200ms ease 0.25s !important;
+}
+#navigator-toolbox:focus-within > .browser-toolbar{
+  transition-duration: 250ms, 100ms !important;
+}
+#nav-bar:hover + #PersonalToolbar{
+  transition-duration: 250ms, 100ms !important;
+}
