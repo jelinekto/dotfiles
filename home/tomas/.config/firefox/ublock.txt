@@ -1,5 +1,5 @@
 {
-  "timeStamp": 1691959475771,
+  "timeStamp": 1693689576114,
   "version": "1.51.0",
   "userSettings": {
     "advancedUserEnabled": true,
@@ -52,8 +52,8 @@
     "vivaldi-scheme",
     "wyciwyg-scheme"
   ],
-  "dynamicFilteringString": "* * 3p-script block\n* * 3p-frame block\n* * 3p block",
+  "dynamicFilteringString": "",
   "urlFilteringString": "",
-  "hostnameSwitchesString": "no-large-media: behind-the-scene false\nno-remote-fonts: * true\nno-csp-reports: * true\nno-scripting: * true",
+  "hostnameSwitchesString": "no-large-media: behind-the-scene false\nno-csp-reports: * true",
   "userFilters": ""
 }
