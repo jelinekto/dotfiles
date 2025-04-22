@@ -7,7 +7,7 @@ function fish_prompt
   end
 
   set_color --bold brblue
-  echo -n (prompt_pwd)' '
+  echo -n (prompt_pwd --full-length-dirs 2)' '
 
   if test $errorcode -eq 0
     set_color --bold brgreen
