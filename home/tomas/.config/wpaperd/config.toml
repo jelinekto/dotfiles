@@ -1,0 +1,5 @@
+[default]
+duration = "60m"
+mode = "center"
+sorting = "random"
+path = "/home/tomas/Pictures/Wallpapers"

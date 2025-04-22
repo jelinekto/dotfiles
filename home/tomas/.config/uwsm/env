@@ -1,0 +1,17 @@
+# GUI-specific
+export CLUTTER_BACKEND=wayland
+export GDK_BACKEND=wayland
+export QT_QPA_PLATFORM=wayland
+export QT_QPA_PLATFORMTHEME=kde
+export SDL_VIDEODRIVER=wayland
+export XDG_MENU_PREFIX=arch-
+
+# default programs
+export EDITOR=nvim
+export PAGER=less
+
+# declutter home directory
+export CARGO_HOME="${XDG_DATA_HOME}/cargo"
+export ICEAUTHORITY="${XDG_CACHE_HOME}/ICEauthority"
+export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
+export WGETRC="${XDG_CONFIG_HOME}/wgetrc"

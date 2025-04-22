@@ -1,0 +1,13 @@
+anchor=bottom-right
+border-radius=6
+border-size=3
+default-timeout=0
+font=Ubuntu 18
+height=250
+max-history=100
+on-button-middle=dismiss-all
+outer-margin=20
+padding=7
+width=500
+
+include=~/.config/mako/colours
