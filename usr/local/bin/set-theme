@@ -1,0 +1,31 @@
+#!/bin/sh
+if [ "$1" = 'dark' ] || [ "$1" = 'light' ]; then
+  scheme="$1"
+elif gsettings get org.gnome.desktop.interface gtk-theme | grep -q -- -Dark; then
+  scheme='light'
+else
+  scheme='dark'
+fi
+
+if [ "$scheme" = 'dark' ]; then
+  # GTK
+  gsettings set org.gnome.desktop.interface gtk-theme "Breeze-Dark"
+  gsettings set org.gnome.desktop.interface icon-theme "Breeze Dark"
+  lookandfeeltool -a org.kde.breezedark.desktop
+else
+  gsettings set org.gnome.desktop.interface gtk-theme "Breeze"
+  gsettings set org.gnome.desktop.interface icon-theme "Breeze"
+  lookandfeeltool -a org.kde.breeze.desktop
+fi
+
+# hyprland
+ln -sf "${scheme}-colours.conf" "${XDG_CONFIG_HOME}/hypr/colours.conf"
+hyprctl -q reload
+
+# kitty
+ln -sf "${scheme}-colours.conf" "${XDG_CONFIG_HOME}/kitty/colours.conf"
+pkill -USR1 kitty
+
+# mako
+ln -sf "${scheme}-colours" "${XDG_CONFIG_HOME}/mako/colours"
+makoctl reload

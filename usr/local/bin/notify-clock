@@ -1,0 +1,6 @@
+#!/bin/sh
+while :; do
+  id=$(notify-send --urgency low --expire-time 1100 -e "$(date '+%H:%M:%S    %A %d %B %Y')")
+  sleep 0.95
+  makoctl dismiss -h history -n "$id"
+done

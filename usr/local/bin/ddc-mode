@@ -1,0 +1,21 @@
+#!/bin/sh
+ddcFlags='--bus 7 --disable-dynamic-sleep --sleep-multiplier 0.001'
+
+newMode="$(echo -n "\
+Standard (0x00)
+Ilustrator (0x51)
+FPS (0x01)
+Racing (0x06)
+RTS (0x07)
+Movie (0x03)
+LowBlue (0x0b)
+EasyRead (0x0e)
+Economy (0x08)
+SmartUniformity (0x1f)
+Game1 (0x04)
+Game2 (0x05)" | wofi --prompt "Select mode" | awk -F '[()]' '{print $2}')"
+
+[ -z "$newMode" ] && exit
+
+ddcutil $ddcFlags setvcp DC "$newMode"
+ddcutil $ddcFlags setvcp D6 05

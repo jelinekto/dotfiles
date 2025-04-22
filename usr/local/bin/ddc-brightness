@@ -1,0 +1,90 @@
+#!/bin/bash
+
+# Monitor flags
+ddcOneFlags='--bus 7 --disable-dynamic-sleep --sleep-multiplier 0.001'
+ddcTwoFlags='--bus 2 --enable-dynamic-sleep'
+
+VERBOSE=false
+
+# Parse flags
+for arg in "$@"; do
+  case "$arg" in
+    -v|--verbose)
+      VERBOSE=true
+      shift
+      ;;
+  esac
+done
+
+INPUT=$1
+
+if [ -z "$INPUT" ]; then
+  echo "Usage: $0 [+/-change|0-150] [-v|--verbose]"
+  exit 1
+fi
+
+# Read current brightness & contrast from monitor 1
+CURRENT_BRIGHTNESS_1=$(ddcutil $ddcOneFlags getvcp 10 | awk -F'current value = ' '{print $2}' | awk -F',' '{print $1}' | tr -d ' ')
+CURRENT_CONTRAST_1=$(ddcutil $ddcOneFlags getvcp 12 | awk -F'current value = ' '{print $2}' | awk -F',' '{print $1}' | tr -d ' ')
+
+if [ -z "$CURRENT_BRIGHTNESS_1" ] || [ -z "$CURRENT_CONTRAST_1" ]; then
+  echo "Failed to retrieve monitor 1 settings."
+  exit 1
+fi
+
+# Function to compute unified brightness value (0–150)
+get_unified_value() {
+  local b=$1
+  local c=$2
+  if [ "$b" -eq 0 ]; then
+    echo "$c"
+  else
+    echo $((50 + b))
+  fi
+}
+
+# Calculate unified value
+if [[ "$INPUT" =~ ^[+-] ]]; then
+  UNIFIED_CURRENT=$(get_unified_value "$CURRENT_BRIGHTNESS_1" "$CURRENT_CONTRAST_1")
+  UNIFIED_TARGET=$((UNIFIED_CURRENT + INPUT))
+  [ "$UNIFIED_TARGET" -lt 0 ] && UNIFIED_TARGET=0
+  [ "$UNIFIED_TARGET" -gt 150 ] && UNIFIED_TARGET=150
+else
+  if ! [[ "$INPUT" =~ ^[0-9]+$ ]]; then
+    echo "Invalid input. Use +10, -20, or 0–150."
+    exit 1
+  fi
+  UNIFIED_TARGET=$INPUT
+  if [ "$UNIFIED_TARGET" -lt 0 ] || [ "$UNIFIED_TARGET" -gt 150 ]; then
+    echo "Absolute value must be between 0 and 150."
+    exit 1
+  fi
+fi
+
+# Convert unified target to brightness + contrast for monitor 1
+if [ "$UNIFIED_TARGET" -le 50 ]; then
+  TARGET_BRIGHTNESS_1=0
+  TARGET_CONTRAST_1=$UNIFIED_TARGET
+else
+  TARGET_BRIGHTNESS_1=$((UNIFIED_TARGET - 50))
+  TARGET_CONTRAST_1=50
+fi
+
+# Convert unified target to brightness for monitor 2 (contrast untouched)
+TARGET_BRIGHTNESS_2=$((UNIFIED_TARGET - 50))
+[ "$TARGET_BRIGHTNESS_2" -lt 0 ] && TARGET_BRIGHTNESS_2=0
+[ "$TARGET_BRIGHTNESS_2" -gt 100 ] && TARGET_BRIGHTNESS_2=100
+
+# Verbose output
+if [ "$VERBOSE" = true ]; then
+  echo "Unified level $UNIFIED_TARGET:"
+  echo "  → Monitor 1 → brightness=$TARGET_BRIGHTNESS_1, contrast=$TARGET_CONTRAST_1"
+  echo "  → Monitor 2 → brightness=$TARGET_BRIGHTNESS_2"
+fi
+
+# Apply to monitor 1
+ddcutil $ddcOneFlags setvcp 12 $TARGET_CONTRAST_1
+ddcutil $ddcOneFlags setvcp 10 $TARGET_BRIGHTNESS_1
+
+# Apply to monitor 2 (brightness only)
+ddcutil $ddcTwoFlags setvcp 10 $TARGET_BRIGHTNESS_2
