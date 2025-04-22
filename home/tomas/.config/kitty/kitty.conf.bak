@@ -1,6 +1,0 @@
-font_family UbuntuMono Nerd
-font_size 18.0
-scrollback_lines 10000
-enable_audio_bell no
-include ~/.cache/wal/colors-kitty.conf
-shell fish
