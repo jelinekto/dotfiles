@@ -83,8 +83,8 @@ if [ "$VERBOSE" = true ]; then
 fi
 
 # Apply to monitor 1
-ddcutil $ddcOneFlags setvcp 12 $TARGET_CONTRAST_1
-ddcutil $ddcOneFlags setvcp 10 $TARGET_BRIGHTNESS_1
+(ddcutil $ddcOneFlags setvcp 12 $TARGET_CONTRAST_1
+ddcutil $ddcOneFlags setvcp 10 $TARGET_BRIGHTNESS_1) &
 
 # Apply to monitor 2 (brightness only)
-ddcutil $ddcTwoFlags setvcp 10 $TARGET_BRIGHTNESS_2
+ddcutil $ddcTwoFlags setvcp 10 $TARGET_BRIGHTNESS_2 &
