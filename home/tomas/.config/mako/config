@@ -1,7 +1,7 @@
 anchor=bottom-right
 border-radius=6
 border-size=3
-default-timeout=0
+default-timeout=30000
 font=Ubuntu 18
 height=250
 max-history=100
