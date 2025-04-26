@@ -1,6 +1,16 @@
 #!/bin/sh
-while :; do
-  id=$(notify-send --urgency low --expire-time 1100 -e "$(date '+%H:%M:%S    %A %d %B %Y')")
-  sleep 0.95
+function notificationDismiss() {
   makoctl dismiss -h history -n "$id"
+}
+trap notificationDismiss KILL EXIT
+
+pidof -o %PPID -x notify-clock >/dev/null && pkill -x notify-clock
+
+while :; do
+  datetime="$(date '+%H:%M:%S  %a %d %b')"
+
+  id=$(notify-send --urgency low -e "$datetime")
+
+  sleep 0.9
+  notificationDismiss
 done

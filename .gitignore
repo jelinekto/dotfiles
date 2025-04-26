@@ -48,6 +48,8 @@
 !/home/tomas/.config/systemd/**
 !/home/tomas/.config/uwsm
 !/home/tomas/.config/uwsm/**
+!/home/tomas/.config/waycorner
+!/home/tomas/.config/waycorner/**
 !/home/tomas/.config/wgetrc
 !/home/tomas/.config/wofi
 !/home/tomas/.config/wofi/**
