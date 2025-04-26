@@ -7,6 +7,7 @@
 !/boot/loader/entries/**
 !/boot/loader/loader.conf
 !/etc
+!/etc
 !/etc/doas.conf
 !/etc/dracut*
 !/etc/fstab
@@ -20,6 +21,8 @@
 !/etc/paru.conf
 !/etc/ssh
 !/etc/ssh/sshd_config
+!/etc/systemd
+!/etc/systemd/**
 !/home
 !/home/tomas
 !/home/tomas/.cache
@@ -62,7 +65,7 @@
 !/usr/local/bin
 !/usr/local/bin/**
 
-/home/jeli/.config/mpv/watch_later/**
+/home/tomas/.config/mpv/watch_later/**
 colours
 colours.conf
 fish_variables
