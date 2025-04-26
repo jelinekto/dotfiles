@@ -10,12 +10,16 @@
 !/etc/doas.conf
 !/etc/dracut*
 !/etc/fstab
+!/etc/hostname
 !/etc/locale.*
+!/etc/localtime
 !/etc/makepkg.conf
 !/etc/makepkg.conf.d
 !/etc/makepkg.conf.d/**
 !/etc/pacman.conf
 !/etc/paru.conf
+!/etc/ssh
+!/etc/ssh/sshd_config
 !/home
 !/home/tomas
 !/home/tomas/.cache

@@ -1,0 +1,9 @@
+Include /etc/ssh/sshd_config.d/*.conf
+
+MaxAuthTries 1
+PasswordAuthentication no
+PermitRootLogin no
+PubkeyAuthentication no
+
+Match Address 192.168.*.*
+  PubkeyAuthentication yes
