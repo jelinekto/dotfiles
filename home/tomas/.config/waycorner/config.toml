@@ -17,14 +17,14 @@ locations = ["bottom_right"]  # default
 # Size of the hot corners in pixels, for edges the size means the width
 # for vertical edges, and height for horizontal edges. The other dimension
 # will be the width/height of your display - the set margin.
-size = 25  # default
+size = 10  # default
 
 # Margin on the sides of the hot edges, only applicable to edge locations.
 # See the comment with sizes attribute above.
 # margin = 20  # default
 
 # Timeout in milliseconds before command is triggered.
-timeout_ms = 250  # default
+timeout_ms = 200  # default
 
 # Hex color of the corner when previewed, supports transparency. (#AARRGGBB or #RRGGBB)
 # (Useful for debuging purposes when setting up several hot corners.)
