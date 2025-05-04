@@ -8,10 +8,14 @@ export XDG_MENU_PREFIX=arch-
 
 # default programs
 export EDITOR=nvim
-export PAGER=less
+export PAGER=nvimpager
 
 # declutter home directory
 export CARGO_HOME="${XDG_DATA_HOME}/cargo"
+export GOMODCACHE="${XDG_CACHE_HOME}/go/mod"
+export GOPATH="${XDG_DATA_HOME}/go"
+export GTK2_RC_FILES="${XDG_CONFIG_HOME}/gtk-2.0/gtkrc":"${XDG_CONFIG_HOME}/gtk-2.0/gtkrc.mine"
 export ICEAUTHORITY="${XDG_CACHE_HOME}/ICEauthority"
+export KODI_DATA="${XDG_DATA_HOME}/kodi"
 export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
 export WGETRC="${XDG_CONFIG_HOME}/wgetrc"
