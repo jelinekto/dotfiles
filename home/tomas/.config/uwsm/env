@@ -1,12 +1,16 @@
 # GUI-specific
 export CLUTTER_BACKEND=wayland
 export GDK_BACKEND=wayland
-export LIBVA_DRIVER_NAME=radeonsi
 export QT_QPA_PLATFORM=wayland
 export QT_QPA_PLATFORMTHEME=kde
 export SDL_VIDEODRIVER=wayland
-export VDPAU_DRIVER=radeonsi
 export XDG_MENU_PREFIX=arch-
+
+# hwaccel/GPU settings
+export LIBVA_DRIVER_NAME=nvidia
+export NVD_BACKEND=direct
+export VDPAU_DRIVER=nvidia
+export __GLX_VENDOR_LIBRARY_NAME=nvidia
 
 # default programs
 export DIFFPROG=nvimpager
@@ -14,6 +18,7 @@ export EDITOR=nvim
 export PAGER=nvimpager
 
 # declutter home directory
+export ADB_VENDOR_KEYS="${XDG_DATA_HOME}/android"
 export CARGO_HOME="${XDG_DATA_HOME}/cargo"
 export GOMODCACHE="${XDG_CACHE_HOME}/go/mod"
 export GOPATH="${XDG_DATA_HOME}/go"
@@ -21,4 +26,9 @@ export GTK2_RC_FILES="${XDG_CONFIG_HOME}/gtk-2.0/gtkrc":"${XDG_CONFIG_HOME}/gtk-
 export ICEAUTHORITY="${XDG_CACHE_HOME}/ICEauthority"
 export KODI_DATA="${XDG_DATA_HOME}/kodi"
 export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
+export NUGET_PACKAGES="${XDG_CACHE_HOME}/NuGetPackages"
+export OLLAMA_MODELS="/var/lib/ollama"
+export PYTHONPYCACHEPREFIX="${XDG_CACHE_HOME}/python"
+export PYTHONUSERBASE="${XDG_DATA_HOME}/python"
+export PYTHON_HISTORY="${XDG_STATE_HOME}/python_history"
 export WGETRC="${XDG_CONFIG_HOME}/wgetrc"
