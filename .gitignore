@@ -12,6 +12,8 @@
 !/etc/dracut*
 !/etc/fstab
 !/etc/hostname
+!/etc/lact
+!/etc/lact/**
 !/etc/locale.*
 !/etc/localtime
 !/etc/makepkg.conf
@@ -68,6 +70,7 @@
 !/usr/local/bin/**
 
 /home/tomas/.config/mpv/watch_later/**
+/home/tomas/.config/gtk-3.0/bookmarks
 colours
 colours.conf
 fish_variables

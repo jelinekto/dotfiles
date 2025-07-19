@@ -1,5 +1,5 @@
 show=dmenu
-normal_window=true
+normal_window=false
 width=35%
 height=30%
 allow-images=true
