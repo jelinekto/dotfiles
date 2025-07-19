@@ -1,0 +1,27 @@
+version: 5
+daemon:
+  log_level: info
+  admin_group: wheel
+  disable_clocks_cleanup: false
+apply_settings_timer: 5
+gpus:
+  '10DE:2203-1462:5091-0000:01:00.0':
+    fan_control_enabled: false
+    fan_control_settings:
+      mode: curve
+      static_speed: 1.0
+      temperature_key: edge
+      interval_ms: 500
+      curve:
+        59: 0.0
+        60: 0.3019608
+        76: 1.0
+      spindown_delay_ms: 5000
+      change_threshold: 2
+    power_cap: 450.0
+    gpu_clock_offsets:
+      0: 110
+    mem_clock_offsets:
+      0: 2800
+current_profile: null
+auto_switch_profiles: false

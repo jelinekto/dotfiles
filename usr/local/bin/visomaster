@@ -1,0 +1,6 @@
+#!/bin/sh
+cd "${HOME}/.local/opt/VisoMaster"
+. "/opt/miniconda3/etc/profile.d/conda.sh"
+conda activate visomaster
+
+exec python main.py
