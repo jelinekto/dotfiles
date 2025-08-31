@@ -13,11 +13,11 @@ gpus:
       temperature_key: edge
       interval_ms: 500
       curve:
-        59: 0.0
-        60: 0.3019608
-        76: 1.0
-      spindown_delay_ms: 5000
+        55: 0.3019608
+        80: 1.0
+      spindown_delay_ms: 4960
       change_threshold: 2
+      auto_threshold: 55
     power_cap: 450.0
     gpu_clock_offsets:
       0: 110

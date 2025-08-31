@@ -4,7 +4,6 @@
 /dev/disk/by-label/cachyos /usr/local       btrfs noatime,subvol=@local   0 0
 /dev/disk/by-label/cachyos /var/cache       btrfs noatime,subvol=@cache   0 0
 /dev/disk/by-label/cachyos /var/lib/flatpak btrfs noatime,subvol=@flatpak 0 0
-/dev/disk/by-label/cachyos /var/lib/ollama  btrfs noatime,subvol=@ollama  0 0
 /dev/disk/by-label/cachyos /var/log         btrfs noatime,subvol=@log     0 0
 /dev/disk/by-label/cachyos /var/tmp         btrfs noatime,subvol=@tmp     0 0
 
