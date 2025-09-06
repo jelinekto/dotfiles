@@ -11,10 +11,12 @@ if [ "$scheme" = 'dark' ]; then
   # GTK
   gsettings set org.gnome.desktop.interface gtk-theme "Breeze-Dark"
   gsettings set org.gnome.desktop.interface icon-theme "Breeze Dark"
+  gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
   lookandfeeltool -a org.kde.breezedark.desktop
 else
   gsettings set org.gnome.desktop.interface gtk-theme "Breeze"
   gsettings set org.gnome.desktop.interface icon-theme "Breeze"
+  gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'
   lookandfeeltool -a org.kde.breeze.desktop
 fi
 

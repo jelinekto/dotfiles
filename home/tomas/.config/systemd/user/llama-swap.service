@@ -1,0 +1,18 @@
+[Unit]
+Description=Model swapping for llama.cpp (or any local OpenAPI compatible server)
+After=network-online.target
+
+[Service]
+StateDirectory=%h/.local/share/llama-swap
+WorkingDirectory=%T
+#Environment=HOME=%S/%p
+
+Restart=on-failure
+RestartSec=3
+StartLimitBurst=3
+StartLimitInterval=30
+
+ExecStart=/usr/bin/llama-swap -config %h/.config/llama-swap/config.yaml -watch-config -listen 127.0.0.1:11434
+
+[Install]
+WantedBy=default.target

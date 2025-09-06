@@ -13,6 +13,7 @@ set mouse=a
 set noshowmode " hide default mode indicator
 set nottimeout " exit mode immediately after pressing Esc
 set path+=** " search subdirectories recursively
+set relativenumber
 set smartindent expandtab tabstop=2 softtabstop=2 shiftwidth=2 " tabs are spaces
 set spelllang=en,cs
 set splitbelow splitright " place splits as expected
@@ -27,7 +28,7 @@ noremap <leader>P :source ~/.config/nvim/init.vim \| :PlugUpgrade \| PlugInstall
 "" get rid of search highlights
 noremap <Esc> :nohlsearch<CR><Esc>
 "" toggle line numbers
-noremap <leader>N :set number! relativenumber!<CR>
+noremap <leader>n :set number! relativenumber!<CR>
 "" open file
 noremap <leader>e :Files<CR>
 noremap <leader>g :Rg<CR>
@@ -54,6 +55,16 @@ noremap <leader>b :Buffers<CR>
 noremap <leader><Tab> <C-^>
 noremap <leader>L :Lines<CR>
 noremap <leader>C :bw<CR>
+nmap <Leader>1 <Plug>lightline#bufferline#go(1)
+nmap <Leader>2 <Plug>lightline#bufferline#go(2)
+nmap <Leader>3 <Plug>lightline#bufferline#go(3)
+nmap <Leader>4 <Plug>lightline#bufferline#go(4)
+nmap <Leader>5 <Plug>lightline#bufferline#go(5)
+nmap <Leader>6 <Plug>lightline#bufferline#go(6)
+nmap <Leader>7 <Plug>lightline#bufferline#go(7)
+nmap <Leader>8 <Plug>lightline#bufferline#go(8)
+nmap <Leader>9 <Plug>lightline#bufferline#go(9)
+nmap <Leader>0 <Plug>lightline#bufferline#go(10)
 "" history
 noremap <leader>f :History<CR>
 noremap <leader>; :History:<CR>
@@ -108,6 +119,7 @@ Plug 'junegunn/limelight.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'machakann/vim-sandwich'
 Plug 'mbbill/undotree'
+Plug 'mengelbrecht/lightline-bufferline'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'preservim/nerdtree' | Plug 'Xuyuanp/nerdtree-git-plugin' | Plug 'ryanoasis/vim-devicons' | Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'qpkorr/vim-bufkill'
@@ -184,8 +196,8 @@ autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_
 "" undotree
 noremap <leader>u <Esc>:UndotreeToggle<CR>
 "" lightline
-"\ 'colorscheme': 'base16-default-dark',
 let g:lightline = {
+\ 'colorscheme': 'Tomorrow_Night_Eighties',
 \ 'component_function': {
 \   'modified': 'LightLineModified',
 \   'gitbranch': 'LightLineFugitive',
@@ -198,20 +210,26 @@ let g:lightline = {
 \   'linter_warnings': 'lightline#ale#warnings',
 \   'linter_errors': 'lightline#ale#errors',
 \   'linter_ok': 'lightline#ale#ok',
+\   'buffers': 'lightline#bufferline#buffers',
 \ },
 \ 'component_type': {
 \   'linter_checking': 'left',
 \   'linter_warnings': 'warning',
 \   'linter_errors': 'error',
 \   'linter_ok': 'left',
+\   'buffers': 'tabsel',
 \ },
 \ 'active': {
 \   'left': [ [ 'mode', 'paste' ],
 \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
 \   'right': [ [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok' ],
 \              [ 'lineinfo' ],
-\              [ 'percent' ],
-\              [ 'filetype' ] ]
+\              [ 'percent', 'charvaluehex' ],
+\              [ 'fileformat', 'fileencoding', 'filetype' ] ],
+\ },
+\ 'tabline': {
+\   'left': [ ['buffers'] ],
+\   'right': [ [''] ]
 \ },
 \}
 let g:unite_force_overwrite_statusline = 0
@@ -235,7 +253,18 @@ function! LightLineFugitive()
  endif
  return ''
 endfunction
+"" lightline-bufferline
+let g:lightline.component_raw = {'buffers': 1}
+let g:lightline#bufferline#clickable = 1
+let g:lightline#bufferline#unicode_symbols = 1
+let g:lightline#bufferline#show_number = 1
+let g:lightline#bufferline#enable_devicons = 1
+let g:lightline#bufferline#icon_position = 'first'
+let g:lightline#bufferline#min_buffer_count = 2
 
 "" colorscheme
 set notermguicolors
 set t_Co=16
+highlight LineNr ctermfg=8
+highlight Visual ctermbg=7 ctermfg=0
+highlight Comment ctermfg=7

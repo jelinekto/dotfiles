@@ -1,0 +1,11 @@
+[Unit]
+Description=sillytavern
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/sillytavern --browserLaunchEnabled false
+Type=simple
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
