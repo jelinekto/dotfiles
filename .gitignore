@@ -46,6 +46,8 @@
 !/home/tomas/.config/npm/**
 !/home/tomas/.config/nvim
 !/home/tomas/.config/nvim/**
+!/home/tomas/.config/open-webui
+!/home/tomas/.config/open-webui/**
 !/home/tomas/.config/systemd
 !/home/tomas/.config/systemd/**
 !/home/tomas/.config/uwsm

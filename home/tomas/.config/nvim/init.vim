@@ -111,6 +111,7 @@ Plug 'easymotion/vim-easymotion'
 Plug 'farmergreg/vim-lastplace'
 Plug 'gentoo/gentoo-syntax'
 Plug 'georgewitteman/vim-fish'
+Plug 'ggml-org/llama.vim'
 Plug 'itchyny/lightline.vim' | Plug 'maximbaz/lightline-ale'
 Plug 'itmammoth/doorboy.vim'
 Plug 'junegunn/fzf.vim'
@@ -132,6 +133,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-speeddating'
 Plug 'vim-scripts/SearchComplete'
+Plug 'vim-scripts/VimCompletesMe'
 call plug#end()
 
 " configure plugins
@@ -195,6 +197,17 @@ autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_
   \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 "" undotree
 noremap <leader>u <Esc>:UndotreeToggle<CR>
+"" llama.vim
+let g:llama_config = {
+      \ 'show_info': 0,
+      \ 'endpoint': 'http://127.0.0.1:11434/infill',
+      \ 'model': 'Qwen3-Coder-30B-A3B-Instruct',
+      \ 'keymap_accept_full': '<S-Tab>',
+      \ 'keymap_accept_line': '<C-e>',
+      \ 'keymap_accept_word': '<A-f>',
+      \ 'enable_at_startup': v:true,
+      \ }
+noremap <leader>q <Esc>:LlamaToggle<CR>
 "" lightline
 let g:lightline = {
 \ 'colorscheme': 'Tomorrow_Night_Eighties',
@@ -268,3 +281,7 @@ set t_Co=16
 highlight LineNr ctermfg=8
 highlight Visual ctermbg=7 ctermfg=0
 highlight Comment ctermfg=7
+highlight Pmenu ctermfg=8 ctermbg=0
+highlight PmenuSel ctermfg=15 ctermbg=0 cterm=bold
+highlight PmenuSbar ctermbg=8
+highlight PmenuThumb ctermbg=15

@@ -8,4 +8,4 @@
 /dev/disk/by-label/cachyos /var/log         btrfs noatime,subvol=@log     0 0
 /dev/disk/by-label/cachyos /var/tmp         btrfs noatime,subvol=@tmp     0 0
 
-/dev/disk/by-partlabel/esp /boot      vfat  noatime               0 0
+/dev/disk/by-partlabel/esp /boot            vfat  noatime                 0 0
