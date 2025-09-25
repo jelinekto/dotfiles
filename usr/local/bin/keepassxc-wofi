@@ -1,5 +1,5 @@
 #!/bin/sh
-db="${XDG_DATA_HOME}/k.kdbx"
+db="${XDG_DATA_HOME}/keepass/k.kdbx"
 
 dbpass="$(gpg --decrypt "${db}.gpg")"
 [ -z "$dbpass" ] && dbpass="$(zenity --password)"

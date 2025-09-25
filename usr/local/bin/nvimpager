@@ -1,0 +1,8 @@
+#!/bin/sh
+if [ -z "$1" ]; then
+  ESC=$(printf '\033')
+  sed "s/${ESC}\[[0-9;]*[mK]//g" | \
+  nvim -R -c 'setlocal noswapfile nobackup nowritebackup noundofile undolevels=0 shada= nonumber norelativenumber' -c 'nnoremap <buffer> q :q<CR>' "$@"
+else
+  nvim -R -c 'setlocal noswapfile nobackup nowritebackup noundofile undolevels=0 shada= nonumber norelativenumber' -c 'nnoremap <buffer> q :q<CR>' "$@"
+fi

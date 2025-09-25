@@ -8,7 +8,7 @@ gpus:
   '10DE:2203-1462:5091-0000:01:00.0':
     fan_control_enabled: false
     fan_control_settings:
-      mode: curve
+      mode: static
       static_speed: 1.0
       temperature_key: edge
       interval_ms: 500
