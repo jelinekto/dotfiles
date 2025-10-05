@@ -1,0 +1,9 @@
+# vim: set ft=yaml :
+
+macros:
+  "llama": >
+    /usr/bin/llama-server --port ${PORT} --n-gpu-layers 9999 --mlock --ctx-size 8192 --no-kv-offload --flash-attn on
+  "llm_dir": /var/lib/llm
+  "ttl": 600
+
+models:

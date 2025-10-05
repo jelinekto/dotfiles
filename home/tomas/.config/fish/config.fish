@@ -23,7 +23,7 @@ abbr make "make -j (nproc)"
 abbr mine "doas chown (whoami):(whoami) -R"
 abbr dmesg "dmesg -ew"
 abbr dd 'dd status=progress bs=1M'
-abbr up 'doas informant read; paru -Syu; flatpak update; paru -Runs (paru -Qqdt); doas checkservices'
+abbr up 'doas informant read; paru -Syu; flatpak update; paru -Runs (paru -Qqdt); doas checkservices -u'
 
 abbr --position anywhere G '| grep -E'
 abbr --position anywhere Gi '| grep -Ei'

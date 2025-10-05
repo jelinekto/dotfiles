@@ -201,7 +201,7 @@ noremap <leader>u <Esc>:UndotreeToggle<CR>
 let g:llama_config = {
       \ 'show_info': 0,
       \ 'endpoint': 'http://127.0.0.1:11434/infill',
-      \ 'model': 'Qwen2.5-Coder',
+      \ 'model': 'qwen2.5-coder',
       \ 'keymap_accept_full': '<S-Tab>',
       \ 'keymap_accept_line': '<C-e>',
       \ 'keymap_accept_word': '<A-f>',

@@ -38,6 +38,8 @@
 !/home/tomas/.config/hypr/**
 !/home/tomas/.config/kitty
 !/home/tomas/.config/kitty/**
+!/home/tomas/.config/llama-swap
+!/home/tomas/.config/llama-swap/config.yaml.base
 !/home/tomas/.config/mako
 !/home/tomas/.config/mako/**
 !/home/tomas/.config/mpv
