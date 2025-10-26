@@ -2,7 +2,7 @@
 
 macros:
   "llama": >
-    /usr/bin/llama-server --port ${PORT} --n-gpu-layers 9999 --mlock --ctx-size 8192 --no-kv-offload --flash-attn on
+    /usr/bin/llama-server --port ${PORT} --n-gpu-layers 99 --n-cpu-moe 99 --threads 8 --mlock --ctx-size 16384 --no-kv-offload
   "llm_dir": /var/lib/llm
   "ttl": 600
 

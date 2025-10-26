@@ -23,6 +23,9 @@ export DIFFPROG=nvimpager
 export EDITOR=nvim
 export PAGER=nvimpager
 
+# various fixes and stuff
+LS_COLORS='' # to make `fd` respect terminal colours
+
 # declutter home directory
 export ADB_VENDOR_KEYS="${XDG_DATA_HOME}/android"
 export CARGO_HOME="${XDG_DATA_HOME}/cargo"

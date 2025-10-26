@@ -2,6 +2,16 @@
 bind           \es "fish_commandline_prepend doas"
 bind -M insert \es "fish_commandline_prepend doas"
 
+# make alt+key operate on words instead of entire arguments
+bind -M insert alt-left  prevd-or-backward-word
+bind -M insert alt-right nextd-or-forward-word
+bind -M insert alt-backspace backward-kill-word
+bind -M insert alt-delete  kill-word
+bind -M default alt-left  prevd-or-backward-word
+bind -M default alt-right nextd-or-forward-word
+bind -M default alt-backspace backward-kill-word
+bind -M default alt-delete  kill-word
+
 # autopair
 set -g autopair_left "(" "[" "{" '"' "'"
 set -g autopair_right ")" "]" "}" '"' "'"
