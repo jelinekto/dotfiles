@@ -5,7 +5,7 @@ daemon:
   disable_clocks_cleanup: false
 apply_settings_timer: 5
 gpus:
-  '10DE:2203-1462:5091-0000:01:00.0':
+  10DE:2203-1462:5091-0000:01:00.0:
     fan_control_enabled: false
     fan_control_settings:
       mode: static
@@ -18,7 +18,7 @@ gpus:
       spindown_delay_ms: 4960
       change_threshold: 2
       auto_threshold: 55
-    power_cap: 450.0
+    power_cap: 351.0
     gpu_clock_offsets:
       0: 110
     mem_clock_offsets:
