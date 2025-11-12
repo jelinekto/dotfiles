@@ -1,0 +1,6 @@
+#!/bin/sh
+cd "${HOME}/.local/opt/facefusion"
+. "/opt/miniconda3/etc/profile.d/conda.sh"
+conda activate facefusion
+
+exec python facefusion.py "$@"

@@ -1,0 +1,327 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<EOF
+Usage: $(basename "$0") [options] INPUT.txt OUTPUT.ass
+
+Timing options:
+  -d, --duration        TOTAL_DURATION_SECONDS     (required) total run time (lines + gaps)
+  -c, --cps             MAX_CHAR_PER_SECOND        default: 15
+  -g, --gap             GAP_SECONDS_BETWEEN_LINES  default: 0.5
+
+Layout options:
+  -x, --xres            PlayResX                   default: 1080
+  -y, --yres            PlayResY                   default: 1920
+  --wrap                0|1|2|3                    default: 3  (smart wrap, bottom wider)
+
+Style options:
+  -f, --font            FONT_NAME                  default: Ubuntu
+  -s, --size            FONT_SIZE                  default: 92
+  -o, --outline-width   PIXELS                     default: 8
+  -S, --shadow-size     PIXELS                     default: 2
+  -C, --color           HEX                        default: FFFFFF (white)
+  -H, --highlight-color HEX                        default: FFFF00 (yellow)
+  -O, --outline-colour  HEX                        default: 000000 (black)
+  -X, --scale-x         PERCENT                    default: 100
+  -Y, --scale-y         PERCENT                    default: 100
+  --no-bold                                        default: bold ON
+
+Positioning:
+  -v, --vertical-offset PIXELS                     default: 75   (MarginV)
+  -m, --margin          PIXELS                     default: 10   (MarginL/MarginR)
+  -a, --align           1..9                       default: 2    (ASS numpad alignment)
+
+Highlighting:
+  -M, --highlight-mode  word|sweep|current|box     default: current
+                        word    = {\\kN}   (instant per-word)
+                        sweep   = {\\kfN}  (left→right fill per-word)
+                        current = two-layer: only current word colored
+                        box     = two-layer: only current word gets an opaque background box
+
+Box options (only for -M box):
+  --box-padding         PIXELS                     default: uses --outline-width
+  --box-vpad            PIXELS                     default: uses --box-padding
+
+Transitions:
+  --transition-ms       MILLISECONDS               default: 0 (off; alpha crossfade on overlays)
+  --overlap-frac        0..1                       default: 1 (fraction of --transition-ms for each side)
+
+Colours accept HEX as #RRGGBB or RRGGBB; they are converted to ASS &HAABBGGRR.
+EOF
+}
+
+# Defaults
+CPS=15
+GAP=0.5
+XRES=1080
+YRES=1920
+WRAP=3
+FONT="Ubuntu"
+FSIZE=92
+OUTLINE_W=8
+SHADOW_S=2
+COLOR="FFFFFF"
+HICOLOR="FFFF00"
+OUTLINE_COLOR="000000"
+SCALE_X=100
+SCALE_Y=100
+VOFF=75
+HMARGIN=10
+ALIGN=2
+HL_MODE="current"   # default highlighting mode
+BOX_PAD=""          # if empty -> use OUTLINE_W
+BOX_VPAD=""         # if empty -> use BOX_PAD
+TRANS_MS=0
+OVERLAP_FRAC=1
+DURATION=""
+BOLD_ON=1           # default bold
+
+# Parse options
+if [[ $# -lt 1 ]]; then usage; exit 1; fi
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -d|--duration) DURATION="$2"; shift 2;;
+    -c|--cps) CPS="$2"; shift 2;;
+    -g|--gap) GAP="$2"; shift 2;;
+    -x|--xres) XRES="$2"; shift 2;;
+    -y|--yres) YRES="$2"; shift 2;;
+    --wrap) WRAP="$2"; shift 2;;
+    -f|--font) FONT="$2"; shift 2;;
+    -s|--size) FSIZE="$2"; shift 2;;
+    -o|--outline-width) OUTLINE_W="$2"; shift 2;;
+    -S|--shadow-size) SHADOW_S="$2"; shift 2;;
+    -O|--outline-colour) OUTLINE_COLOR="$2"; shift 2;;
+    -H|--highlight-color) HICOLOR="$2"; shift 2;;
+    -C|--color|-colour) COLOR="$2"; shift 2;;
+    -X|--scale-x) SCALE_X="$2"; shift 2;;
+    -Y|--scale-y) SCALE_Y="$2"; shift 2;;
+    -v|--vertical-offset) VOFF="$2"; shift 2;;
+    -m|--margin) HMARGIN="$2"; shift 2;;
+    -a|--align) ALIGN="$2"; shift 2;;
+    -M|--highlight-mode) HL_MODE="$2"; shift 2;;
+    --box-padding) BOX_PAD="$2"; shift 2;;
+    --box-vpad) BOX_VPAD="$2"; shift 2;;
+    --transition-ms) TRANS_MS="$2"; shift 2;;
+    --overlap-frac) OVERLAP_FRAC="$2"; shift 2;;
+    --no-bold) BOLD_ON=0; shift ;;
+    -h|--help) usage; exit 0;;
+    --) shift; break;;
+    -*) echo "Unknown option: $1" >&2; usage; exit 1;;
+    *) break;;
+  esac
+done
+
+if [[ $# -ne 2 ]]; then echo "Error: need INPUT and OUTPUT." >&2; usage; exit 1; fi
+if [[ -z "${DURATION}" ]]; then echo "Error: --duration is required." >&2; usage; exit 1; fi
+
+INPUT="$1"
+OUTPUT="$2"
+[[ -f "$INPUT" ]] || { echo "Error: input not found: $INPUT" >&2; exit 1; }
+
+# Normalize hex (drop leading #, uppercase)
+normhex(){ local h="${1#\#}"; echo "${h^^}"; }
+COLOR="$(normhex "$COLOR")"
+HICOLOR="$(normhex "$HICOLOR")"
+OUTLINE_COLOR="$(normhex "$OUTLINE_COLOR")"
+
+# Karaoke tag for single-line modes
+K_TAG="k"
+case "$HL_MODE" in
+  word|WORD) K_TAG="k" ;;
+  sweep|SWEEP) K_TAG="kf" ;;
+  current|CURRENT|box|BOX) K_TAG="k" ;;
+  *) echo "Error: --highlight-mode must be one of: word, sweep, current, box" >&2; exit 1;;
+esac
+
+# Awk via here-doc to avoid quoting pitfalls
+awk -v total="$DURATION" -v cps="$CPS" -v gap="$GAP" \
+    -v xres="$XRES" -v yres="$YRES" -v wrap="$WRAP" \
+    -v font="$FONT" -v fsize="$FSIZE" \
+    -v outline_w="$OUTLINE_W" -v shadow_s="$SHADOW_S" \
+    -v color_hex="$COLOR" -v hicolor_hex="$HICOLOR" -v ocolor_hex="$OUTLINE_COLOR" \
+    -v bold_on="$BOLD_ON" -v scalex="$SCALE_X" -v scaley="$SCALE_Y" \
+    -v align="$ALIGN" -v hmargin="$HMARGIN" -v voff="$VOFF" \
+    -v hlmode="$HL_MODE" -v ktag="$K_TAG" \
+    -v box_pad="$BOX_PAD" -v box_vpad="$BOX_VPAD" \
+    -v trans_ms="$TRANS_MS" -v overlap_frac="$OVERLAP_FRAC" -f - "$INPUT" > "$OUTPUT" <<'AWK'
+function trim(s){ sub(/^[ \t\r\n]+/,"",s); sub(/[ \t\r\n]+$/,"",s); return s }
+function to_cs(t){ return int((t*100)+0.5) }
+function fmt_time(cs,   s,cs2,m,h){ s=int(cs/100); cs2=cs-s*100; m=int(s/60); s-=m*60; h=int(m/60); m-=h*60; return sprintf("%d:%02d:%02d.%02d", h, m, s, cs2) }
+function count_chars(s){ return length(s) }
+function ass_color(rrggbb,   r,g,b){ if (length(rrggbb)!=6) return "&H00FFFFFF"; r=substr(rrggbb,1,2); g=substr(rrggbb,3,2); b=substr(rrggbb,5,2); return sprintf("&H00%s%s%s", b, g, r) }
+function split_words_preserve_spaces(s, words, spaces,   n,rest,token) {
+  gsub(/[ \t]+/," ",s); n=0; rest=s
+  while (match(rest,/[^ ]+/)) { token=substr(rest,RSTART,RLENGTH); n++; words[n]=token; rest=substr(rest,RSTART+RLENGTH); sub(/^ /,"",rest); spaces[n]=(rest!=""?" ":"") }
+  return n
+}
+
+BEGIN{
+  OFS="\t"
+  if ((cps+0) <= 0) { print "Error: --cps must be a positive number." > "/dev/stderr"; exit 1 }
+  if ((scalex+0) <= 0 || (scaley+0) <= 0) { print "Error: --scale-x and --scale-y must be positive numbers." > "/dev/stderr"; exit 1 }
+  if ((align+0) < 1 || (align+0) > 9) { print "Error: --align must be 1..9 (ASS numpad style)." > "/dev/stderr"; exit 1 }
+
+  # Warn about Opaque box + scaling (Aegisub docs: broken when font scale != 100)
+  if (tolower(hlmode) == "box" && ((scalex+0) != 100 || (scaley+0) != 100)) {
+    print "Warning: Opaque box rendering may be broken when ScaleX/Y != 100. (Proceeding anyway.)" > "/dev/stderr"
+  }
+
+  primary   = ass_color(color_hex)
+  secondary = ass_color(hicolor_hex)
+  outlinec  = ass_color(ocolor_hex)
+  backc     = "&H7F000000"
+  boldfield = (bold_on ? -1 : 0)
+
+  # Box padding defaults
+  boxpad = (box_pad == "" ? outline_w : (box_pad+0))
+  boxv   = (box_vpad == "" ? boxpad    : (box_vpad+0))
+
+  # sanitize overlap fraction
+  ofrac = (overlap_frac+0)
+  if (ofrac < 0) ofrac = 0
+  if (ofrac > 1) ofrac = 1
+}
+{
+  raw=$0; trimmed=trim(raw); if (trimmed=="") next
+  i=++N; L[i]=trimmed; C[i]=count_chars(trimmed); min_dur[i]=(C[i]>0? C[i]/cps : 0.1); sum_min+=min_dur[i]
+}
+END{
+  if (N==0) { print "No non-empty lines." > "/dev/stderr"; exit 1 }
+  gaps_total = gap * (N-1)
+  if (total <= gaps_total) { print "Error: total duration <= gaps total. Increase --duration or reduce --gap." > "/dev/stderr"; exit 1 }
+  if (sum_min <= 0) { print "Internal error: zero minimum duration." > "/dev/stderr"; exit 1 }
+  scale = (total - gaps_total) / sum_min
+  if (scale < 1.0) { printf("Warning: scale=%.3f < 1 -> exceeds requested max CPS (%.2f).\n", scale, cps) > "/dev/stderr" }
+
+  print "[Script Info]"
+  print "ScriptType: v4.00+"
+  printf("PlayResX: %d\n", xres)
+  printf("PlayResY: %d\n", yres)
+  printf("WrapStyle: %d\n", wrap)
+  print "ScaledBorderAndShadow: yes"
+  print "Collisions: Normal"
+  print ""
+
+  print "[V4+ Styles]"
+  print "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding"
+
+  # Default style (BorderStyle=1)
+  printf("Style: Default,%s,%d,%s,%s,%s,%s,%d,0,0,0,%d,%d,0,0,1,%d,%d,%d,%d,%d,%d,1\n",
+         font, fsize, primary, secondary, outlinec, backc, boldfield,
+         scalex, scaley, outline_w, shadow_s, align, hmargin, hmargin, voff)
+
+  # Box style (BorderStyle=3) — OutlineColour = box color; Outline = base padding
+  printf("Style: Box,%s,%d,%s,%s,%s,%s,%d,0,0,0,%d,%d,0,0,3,%d,%d,%d,%d,%d,%d,1\n",
+         font, fsize, primary, secondary, secondary, backc, boldfield,
+         scalex, scaley, boxpad, shadow_s, align, hmargin, hmargin, voff)
+
+  print ""
+  print "[Events]"
+  print "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text"
+
+  # Layer plan
+  base_layer = 50
+  low_base  = 10
+  high_base = 70
+
+  t_cs=0
+  for (i=1;i<=N;i++) {
+    line=L[i]; dur_cs=to_cs(min_dur[i]*scale)
+
+    delete W; delete S; nwords=split_words_preserve_spaces(line,W,S)
+    total_chars=0; for (w=1; w<=nwords; w++) total_chars+=length(W[w])
+
+    delete K
+    if (total_chars==0 || nwords==0) { K[1]=(dur_cs>0?dur_cs:1); nwords=1; W[1]=line; S[1]="" }
+    else {
+      assigned=0
+      for (w=1; w<=nwords; w++) { alloc=int((dur_cs*length(W[w])/total_chars)+0.5); if (alloc<1) alloc=1; K[w]=alloc; assigned+=alloc }
+      K[nwords]+=(dur_cs-assigned); if (K[nwords]<1) K[nwords]=1
+    }
+
+    start_cs=t_cs; end_cs=t_cs+dur_cs
+    mode=tolower(hlmode)
+
+    if (mode=="current") {
+      # Base colored sentence (underlay)
+      full=""; for (w=1; w<=nwords; w++) full=full W[w] S[w]
+      base_text=sprintf("{\\1c%s&}%s", secondary, full)
+      printf("Dialogue: %d,%s,%s,Default,,0,0,0,,%s\n",
+             base_layer, fmt_time(start_cs), fmt_time(end_cs), base_text)
+
+      offset=0
+      for (w=1; w<=nwords; w++) {
+        w_base_start = start_cs+offset; w_base_end=w_base_start+K[w]
+
+        # overlap (each side) = trans_ms * overlap_frac
+        extend_ms = int(trans_ms * ofrac + 0.5)
+        extend_cs = int(extend_ms/10)
+        ov_start = (extend_ms>0 ? w_base_start-extend_cs : w_base_start)
+        ov_end   = (extend_ms>0 ? w_base_end+extend_cs   : w_base_end)
+        if (ov_start < start_cs) ov_start = start_cs
+        if (ov_end   > end_cs)   ov_end   = end_cs
+
+        ov="{\\alpha&HFF&}"
+        for (u=1; u<=nwords; u++) {
+          if (u==w) ov=ov "{\\alpha&H00&}" W[u] S[u] "{\\alpha&HFF&}"
+          else      ov=ov W[u] S[u]
+        }
+
+        dur_ms=(ov_end-ov_start)*10
+        tin=extend_ms; tout=extend_ms
+        if (tin+tout>dur_ms) { tin=int(dur_ms/2); tout=dur_ms-tin }
+        if (extend_ms>0) ov="{\\fad(" tin "," tout ")}" ov
+
+        printf("Dialogue: %d,%s,%s,Default,,0,0,0,,%s\n",
+               high_base + w, fmt_time(ov_start), fmt_time(ov_end), ov)
+        offset+=K[w]
+      }
+
+    } else if (mode=="box") {
+      # Readable text above boxes
+      full=""; for (w=1; w<=nwords; w++) full=full W[w] S[w]
+      printf("Dialogue: %d,%s,%s,Default,,0,0,0,,%s\n",
+             base_layer, fmt_time(start_cs), fmt_time(end_cs), full)
+
+      offset=0
+      for (w=1; w<=nwords; w++) {
+        w_base_start = start_cs+offset; w_base_end=w_base_start+K[w]
+
+        extend_ms = int(trans_ms * ofrac + 0.5)
+        extend_cs = int(extend_ms/10)
+        ov_start = (extend_ms>0 ? w_base_start-extend_cs : w_base_start)
+        ov_end   = (extend_ms>0 ? w_base_end+extend_cs   : w_base_end)
+        if (ov_start < start_cs) ov_start = start_cs
+        if (ov_end   > end_cs)   ov_end   = end_cs
+
+        pre=sprintf("{\\xbord%d\\ybord%d\\shad0\\1a&HFF&\\3a&HFF&\\4a&HFF&", boxpad, boxv)
+        dur_ms=(ov_end-ov_start)*10
+        tin=extend_ms; tout=extend_ms
+        if (tin+tout>dur_ms) { tin=int(dur_ms/2); tout=dur_ms-tin }
+        if (extend_ms>0) pre = pre sprintf("\\fad(%d,%d)", tin, tout)
+        pre = pre "}"
+
+        ov=pre
+        for (u=1; u<=nwords; u++) {
+          if (u==w) ov = ov "{\\3a&H00&\\4a&H00&}" W[u] "{\\3a&HFF&\\4a&HFF&}" S[u]
+          else      ov = ov W[u] S[u]
+        }
+
+        printf("Dialogue: %d,%s,%s,Box,,0,0,0,,%s\n",
+               low_base + w, fmt_time(ov_start), fmt_time(ov_end), ov)
+        offset+=K[w]
+      }
+
+    } else {
+      text=""; for (w=1; w<=nwords; w++) text=text sprintf("{\\%s%d}%s%s", ktag, K[w], W[w], S[w])
+      printf("Dialogue: 0,%s,%s,Default,,0,0,0,,%s\n",
+             fmt_time(start_cs), fmt_time(end_cs), text)
+    }
+
+    t_cs=end_cs+to_cs(gap)
+  }
+}
+AWK
+
+echo "Wrote: $OUTPUT"
