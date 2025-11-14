@@ -1,0 +1,13 @@
+[Unit]
+Description=Wayland redshift (wlsunset)
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/wlsunset -t 3500 -l 49.6 -L 17.25
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=graphical-session.target

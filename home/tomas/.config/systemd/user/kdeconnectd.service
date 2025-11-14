@@ -1,0 +1,13 @@
+[Unit]
+Description=KDE Connect daemon
+PartOf=graphical-session.target
+After=graphical-session.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/kdeconnectd
+Restart=on-failure
+
+[Install]
+WantedBy=graphical-session.target

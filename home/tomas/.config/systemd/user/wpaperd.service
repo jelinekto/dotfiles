@@ -1,0 +1,13 @@
+[Unit]
+Description=Wallpaper daemon for Wayland (wpaperd)
+PartOf=graphical-session.target
+After=graphical-session.target
+Requisite=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/wpaperd
+Restart=on-failure
+
+[Install]
+WantedBy=graphical-session.target

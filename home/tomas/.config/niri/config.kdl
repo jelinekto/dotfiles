@@ -1,0 +1,219 @@
+input {
+    keyboard {
+        xkb {
+            layout "cz"
+            variant "coder"
+        }
+        numlock
+    }
+    focus-follows-mouse max-scroll-amount="100%"
+    workspace-auto-back-and-forth
+    disable-power-key-handling
+}
+
+output "DP-1" {
+    mode "3840x2160@144.00"
+    scale 1.0
+    position x=2560 y=0
+    focus-at-startup
+    variable-refresh-rate
+}
+output "HDMI-A-1" {
+    mode "2560x1440@74.78"
+    position x=0 y=0
+}
+
+layout {
+    gaps 9
+
+    center-focused-column "on-overflow"
+    always-center-single-column
+
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+        proportion 1.0
+    }
+    default-column-width { proportion 0.50; }
+
+    preset-window-heights {
+        proportion 0.25
+        proportion 0.5
+        proportion 0.75
+        proportion 1.00
+    }
+
+    focus-ring {
+        off
+        width 4
+    }
+
+    blur {
+        on
+    }
+
+    border {
+        off
+        width 4
+    }
+
+    // You can enable drop shadows for windows.
+    shadow {
+        on
+        // draw-behind-window true
+        softness 5
+        spread 3
+        offset x=0 y=0
+    }
+
+    struts {
+        left 120
+        right 120
+    }
+
+    tab-indicator {
+        width 8
+        gap 4
+        length total-proportion=0.997
+        position "right"
+        place-within-column
+    }
+}
+
+cursor {
+    xcursor-theme "breeze_cursors"
+    xcursor-size 28
+
+    hide-when-typing
+    hide-after-inactive-ms 2000
+}
+
+clipboard {
+    disable-primary
+}
+
+spawn-sh-at-startup "set-theme dark"
+
+spawn-at-startup "firefox"
+spawn-at-startup "thunderbird"
+
+hotkey-overlay {
+    skip-at-startup
+}
+
+prefer-no-csd
+
+screenshot-path "~/Pictures/Screenshots/%Y-%m-%d %H-%M-%S.png"
+
+animations {
+    slowdown 0.8
+}
+
+window-rule {
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    open-floating true
+}
+
+window-rule {
+    match app-id=r#"^org\.keepassxc\.KeePassXC$"#
+    block-out-from "screen-capture"
+    // Use this instead if you want them visible on third-party screenshot tools.
+    // block-out-from "screencast"
+}
+
+window-rule {
+    geometry-corner-radius 10
+    clip-to-geometry true
+}
+
+binds {
+    Mod+return { spawn-sh "kitten @ --to unix:/tmp/kitty.socket launch --type=os-window --cwd=current || kitty --single-instance --listen-on unix:/tmp/kitty.socket"; }
+    Mod+o { spawn "wofi" "--show" "drun"; }
+    Mod+delete { spawn "hyprlock"; }
+
+    Mod+left        { spawn-sh "ddcutil --bus 5 setvcp 10 - 5"; }
+    Mod+right       { spawn-sh "ddcutil --bus 5 setvcp 10 + 5"; }
+    Mod+Shift+left  { spawn-sh "ddcutil --bus 5 setvcp 10 0"; }
+    Mod+Shift+right { spawn-sh "ddcutil --bus 5 setvcp 10 100"; }
+    Mod+down        { spawn-sh "ddcutil --bus 4 setvcp 10 - 5"; }
+    Mod+up          { spawn-sh "ddcutil --bus 4 setvcp 10 + 5"; }
+    Mod+Shift+down  { spawn-sh "ddcutil --bus 4 setvcp 10 0"; }
+    Mod+Shift+up    { spawn-sh "ddcutil --bus 4 setvcp 10 100 "; }
+
+    Mod+Tab { toggle-overview; }
+
+    Mod+Shift+c repeat=false { close-window; }
+
+    Mod+h     { focus-column-left; }
+    Mod+j     { focus-window-down; }
+    Mod+k     { focus-window-up; }
+    Mod+l     { focus-column-right; }
+
+    Mod+Shift+h     { move-column-left; }
+    Mod+Shift+l     { move-column-right; }
+    Mod+Shift+j { move-column-to-workspace-down; }
+    Mod+Shift+k { move-column-to-workspace-up; }
+
+    Mod+Alt+j     { move-window-down; }
+    Mod+Alt+k     { move-window-up; }
+    Mod+Alt+h     { consume-or-expel-window-left; }
+    Mod+Alt+l     { consume-or-expel-window-right; }
+
+    Mod+Control+h { focus-column-first; }
+    Mod+Control+l { focus-column-last; }
+
+    Mod+i { focus-monitor-next; }
+    Mod+Shift+i  { move-window-to-monitor-next; }
+    Mod+Backslash  { move-workspace-to-monitor-next; }
+
+    Mod+Ctrl+j      { focus-workspace-down; }
+    Mod+Ctrl+k        { focus-workspace-up; }
+
+    MouseBack      { focus-column-right; }
+    MouseForward   { focus-column-left; }
+    Mod+MouseBack { move-column-right; }
+    Mod+MouseForward { move-column-left; }
+
+    Mod+bracketright { switch-preset-column-width; }
+    Mod+bracketleft { switch-preset-column-width-back; }
+    Mod+Shift+bracketleft { switch-preset-window-height; }
+    Mod+Shift+bracketright { switch-preset-window-height-back; }
+
+    Mod+m { maximize-column; }
+    Mod+f { fullscreen-window; }
+    Mod+c { center-column; }
+    Mod+Ctrl+c { center-visible-columns; }
+
+    Mod+Space { switch-focus-between-floating-and-tiling; }
+    Mod+Shift+space       { toggle-window-floating; }
+    Mod+MouseMiddle       { toggle-window-floating; }
+
+    Mod+w { toggle-column-tabbed-display; }
+
+    Mod+s { screenshot show-pointer=false; }
+    Mod+Shift+s { screenshot-screen; }
+    Mod+Control+s { screenshot-window; }
+
+    Mod+v { spawn-sh "cliphist list | wofi --dmenu --prompt 'Clipboard history' | cliphist decode | wl-copy"; }
+
+    Mod+Shift+p { spawn "keepassxc-wofi"; }
+
+    Mod+n { spawn "makoctl dismiss"; }
+    Mod+Shift+n { spawn "makoctl dismiss -a"; }
+    Mod+d { spawn "notify-clock"; }
+
+    Mod+t { spawn "set-theme"; }
+    Mod+comma { spawn "wpaperctl" "previous"; }
+    Mod+period { spawn "wpaperctl" "next"; }
+
+    Mod+g { spawn-sh "xdg-open \"$(fd -L . $HOME | sort -h | wofi --prompt 'Open')\""; }
+    Mod+Shift+g { spawn-sh "xdg-open \"$(fd --exclude=.cache --exclude=.local --exclude=.conda --exclude=.mozilla --exclude=.config --exclude=.steam -HL . $HOME | sort -h | wofi --prompt 'Open')\""; }
+    Mod+e { spawn-sh "cat ~/.local/share/emojis.txt | wofi --prompt 'Select emoji' | cut -f 1 -d ' ' | wl-copy -n"; }
+
+    Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
+
+    Mod+Alt+p { spawn "keepassxc" "~/.local/share/keepass/k.kdbx"; }
+
+    Ctrl+Alt+Delete { quit; }
+}

@@ -1,4 +1,6 @@
 #!/bin/sh
+pidof -q niri && niri msg action do-screen-transition --delay-ms 50
+
 if [ "$1" = 'dark' ] || [ "$1" = 'light' ]; then
   scheme="$1"
 elif gsettings get org.gnome.desktop.interface gtk-theme | grep -q -- -Dark; then
@@ -31,3 +33,6 @@ pkill -USR1 kitty
 # mako
 ln -sf "${scheme}-colours" "${XDG_CONFIG_HOME}/mako/colours"
 makoctl reload
+
+# niri
+ln -sf "${scheme}-colours.kdl" "${XDG_CONFIG_HOME}/niri/colours.kdl"

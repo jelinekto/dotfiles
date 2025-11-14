@@ -20,6 +20,9 @@
 !/etc/makepkg.conf
 !/etc/makepkg.conf.d
 !/etc/makepkg.conf.d/**
+!/etc/nvidia
+!/etc/nvidia/nvidia-application-profiles-rc.d/
+!/etc/nvidia/nvidia-application-profiles-rc.d/50-limit-free-buffer-pool-in-wayland-compositors.json
 !/etc/pacman.conf
 !/etc/paru.conf
 !/etc/ssh
@@ -39,10 +42,10 @@
 !/home/tomas/.config/hypr/**
 !/home/tomas/.config/kitty
 !/home/tomas/.config/kitty/**
-!/home/tomas/.config/llama-swap
-!/home/tomas/.config/llama-swap/config.yaml.base
 !/home/tomas/.config/mako
 !/home/tomas/.config/mako/**
+!/home/tomas/.config/niri
+!/home/tomas/.config/niri/**
 !/home/tomas/.config/mpv
 !/home/tomas/.config/mpv/**
 !/home/tomas/.config/npm
@@ -62,7 +65,7 @@
 !/home/tomas/.config/wofi/**
 !/home/tomas/.config/wpaperd
 !/home/tomas/.config/wpaperd/**
-!/home/tomas/.local
+!/home/tomas/.locag
 !/home/tomas/.local/bin
 !/home/tomas/.local/bin/**
 !/home/tomas/.local/share
@@ -79,4 +82,5 @@
 /home/tomas/.config/gtk-3.0/bookmarks
 colours
 colours.conf
+colours.kdl
 fish_variables

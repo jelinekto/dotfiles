@@ -1,0 +1,12 @@
+[Unit]
+Description=OpenSnitch UI
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/opensnitch-ui --background
+Restart=on-failure
+
+[Install]
+WantedBy=graphical-session.target

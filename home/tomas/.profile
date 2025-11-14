@@ -1,10 +1,72 @@
 export PATH=${PATH}:"${HOME}/.local/bin"
 
-if uwsm check may-start && [ ! -e ~/.cache/.hyprland_launched ]; then
-  touch ~/.cache/.hyprland_launched
-  exec uwsm start hyprland-uwsm.desktop
-elif type fish 1>/dev/null 2>/dev/null; then
-  exec fish
-else
-  exec bash
+export XDG_DATA_HOME="${HOME}/.local/share"
+export XDG_CONFIG_HOME="${HOME}/.config"
+export XDG_CACHE_HOME="${HOME}/.cache"
+export XDG_STATE_HOME="${HOME}/.local/state"
+
+# GUI-specific
+export CLUTTER_BACKEND=wayland
+export GDK_BACKEND=wayland
+export QT_QPA_PLATFORM=wayland
+export QT_QPA_PLATFORMTHEME=kde
+export SDL_VIDEODRIVER=wayland
+export XDG_MENU_PREFIX=arch-
+
+# hwaccel/GPU settings
+export LIBVA_DRIVER_NAME=nvidia
+export NVD_BACKEND=direct
+export VDPAU_DRIVER=nvidia
+export __GLX_VENDOR_LIBRARY_NAME=nvidia
+
+# enable HDR
+export DXVK_HDR=1
+export ENABLE_HDR_WSI=1
+
+# Steam/Proton
+export PROTON_DLSS_INDICATOR=1
+export PROTON_DLSS_UPGRADE=1
+export PROTON_ENABLE_HDR=1
+export PROTON_ENABLE_WAYLAND=1
+export PROTON_NO_WM_DECORATION=1
+export PROTON_NVIDIA_LIBS=1
+export PROTON_USE_NTSYNC=1
+
+# default programs
+export DIFFPROG=nvimpager
+export EDITOR=nvim
+export PAGER=nvimpager
+
+# various fixes and stuff
+LS_COLORS='' # to make `fd` respect terminal colours
+
+# declutter home directory
+export ADB_VENDOR_KEYS="${XDG_DATA_HOME}/android"
+export CARGO_HOME="${XDG_DATA_HOME}/cargo"
+export GOMODCACHE="${XDG_CACHE_HOME}/go/mod"
+export GOPATH="${XDG_DATA_HOME}/go"
+export GTK2_RC_FILES="${XDG_CONFIG_HOME}/gtk-2.0/gtkrc":"${XDG_CONFIG_HOME}/gtk-2.0/gtkrc.mine"
+export ICEAUTHORITY="${XDG_CACHE_HOME}/ICEauthority"
+export KODI_DATA="${XDG_DATA_HOME}/kodi"
+export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
+export NUGET_PACKAGES="${XDG_CACHE_HOME}/NuGetPackages"
+export NUGET_PACKAGES="${XDG_CACHE_HOME}/NuGetPackages"
+export OLLAMA_MODELS="/var/lib/ollama"
+export PYTHONPYCACHEPREFIX="${XDG_CACHE_HOME}/python"
+export PYTHONUSERBASE="${XDG_DATA_HOME}/python"
+export PYTHON_HISTORY="${XDG_STATE_HOME}/python_history"
+export WGETRC="${XDG_CONFIG_HOME}/wgetrc"
+
+#if uwsm check may-start && [ ! -e ~/.cache/.hyprland_launched ]; then
+#  touch ~/.cache/.hyprland_launched
+#  exec uwsm start hyprland-uwsm.desktop
+#elif type fish 1>/dev/null 2>/dev/null; then
+#  exec fish
+#else
+#  exec bash
+#fi
+
+if ! pidof -q niri && [ ! -e ~/.cache/.niri_launched ]; then
+  touch ~/.cache/.niri_launched
+  exec niri-session
 fi
