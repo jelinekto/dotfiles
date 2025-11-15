@@ -67,7 +67,7 @@
 !/home/tomas/.config/wofi/**
 !/home/tomas/.config/wpaperd
 !/home/tomas/.config/wpaperd/**
-!/home/tomas/.locag
+!/home/tomas/.local
 !/home/tomas/.local/bin
 !/home/tomas/.local/bin/**
 !/home/tomas/.local/share

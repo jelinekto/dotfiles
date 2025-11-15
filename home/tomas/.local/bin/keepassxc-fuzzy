@@ -1,0 +1,16 @@
+#!/bin/sh
+db="${XDG_DATA_HOME}/keepass/k.kdbx"
+
+dbpass="$(gpg --decrypt "${db}.gpg")"
+[ -z "$dbpass" ] && dbpass="$(zenity --password)"
+
+if ! echo "$dbpass" | keepassxc-cli ls -q "$db" >/dev/null; then
+  notify-send "Password database could not be unlocked!"
+  exit 1
+fi
+
+entry="$(echo "$dbpass" | keepassxc-cli ls -Rfq "$db" | fuzzel --dmenu --prompt 'Password > ')"
+[ -z "$entry" ] && exit
+
+sleep 0.3
+wtype -- $(echo "$dbpass" | keepassxc-cli show -q -a password "$db" "$entry")
