@@ -27,14 +27,15 @@ output "HDMI-A-1" {
 layout {
     gaps 9
 
+    //center-focused-column "on-overflow"
     center-focused-column "on-overflow"
     always-center-single-column
 
     preset-column-widths {
         proportion 0.33333
-        proportion 0.5
+        proportion 0.50
         proportion 0.66667
-        proportion 1.0
+        proportion 1.00
     }
     default-column-width { proportion 0.50; }
 
@@ -48,6 +49,9 @@ layout {
     focus-ring {
         off
         width 4
+        active-color "#6699CC"
+        inactive-color "#505050"
+        urgent-color "#9b0000"
     }
 
     border {
@@ -64,8 +68,8 @@ layout {
     }
 
     struts {
-        left 120
-        right 120
+        left 100
+        right 100
     }
 
     tab-indicator {
@@ -107,6 +111,13 @@ animations {
 }
 
 window-rule {
+    match app-id=r#"firefox$"#
+    match at-startup=true
+    open-maximized true
+    open-focused true
+}
+
+window-rule {
     match app-id=r#"firefox$"# title="^Picture-in-Picture$"
     open-floating true
 }
@@ -123,7 +134,7 @@ window-rule {
 
 binds {
     Mod+return               { spawn-sh "kitten @ --to unix:/tmp/kitty.socket launch --type=os-window --cwd=current || kitty --single-instance --listen-on unix:/tmp/kitty.socket"; }
-    Mod+o                    { spawn "wofi" "--show" "drun"; }
+    Mod+o                    { spawn "fuzzel"; }
     Mod+delete               { spawn "hyprlock"; }
 
     Mod+Tab                  { toggle-overview; }
@@ -134,19 +145,17 @@ binds {
     Mod+j                    { focus-window-down; }
     Mod+k                    { focus-window-up; }
     Mod+l                    { focus-column-right; }
+    Mod+Control+h            { focus-column-first; }
+    Mod+Control+l            { focus-column-last; }
 
     Mod+Shift+h              { move-column-left; }
     Mod+Shift+l              { move-column-right; }
     Mod+Shift+j              { move-column-to-workspace-down; }
     Mod+Shift+k              { move-column-to-workspace-up; }
-
     Mod+Alt+j                { move-window-down; }
     Mod+Alt+k                { move-window-up; }
     Mod+Alt+h                { consume-or-expel-window-left; }
     Mod+Alt+l                { consume-or-expel-window-right; }
-
-    Mod+Control+h            { focus-column-first; }
-    Mod+Control+l            { focus-column-last; }
 
     Mod+i                    { focus-monitor-next; }
     Mod+Shift+i              { move-window-to-monitor-next; }
@@ -183,9 +192,9 @@ binds {
     Mod+Shift+s              { screenshot-screen; }
     Mod+Control+s            { screenshot-window; }
 
-    Mod+v                    { spawn-sh "cliphist list | wofi --dmenu --prompt 'Clipboard history' | cliphist decode | wl-copy"; }
+    Mod+v                    { spawn-sh "cliphist list | fuzzel --dmenu --prompt 'Clipboard item > ' | cliphist decode | wl-copy"; }
 
-    Mod+Shift+p              { spawn "keepassxc-wofi"; }
+    Mod+Shift+p              { spawn "keepassxc-fuzzy"; }
 
     Mod+n                    { spawn "makoctl dismiss"; }
     Mod+Shift+n              { spawn "makoctl dismiss -a"; }
@@ -195,9 +204,9 @@ binds {
     Mod+comma                { spawn "wpaperctl" "previous"; }
     Mod+period               { spawn "wpaperctl" "next"; }
 
-    Mod+g                    { spawn-sh "xdg-open \"$(fd -L . $HOME | sort -h | wofi --prompt 'Open')\""; }
-    Mod+Shift+g              { spawn-sh "xdg-open \"$(fd --exclude=.cache --exclude=.local --exclude=.conda --exclude=.mozilla --exclude=.config --exclude=.steam -HL . $HOME | sort -h | wofi --prompt 'Open')\""; }
-    Mod+e                    { spawn-sh "cat ~/.local/share/emojis.txt | wofi --prompt 'Select emoji' | cut -f 1 -d ' ' | wl-copy -n"; }
+    Mod+g                    { spawn-sh "xdg-open \"$(fd -L . $HOME | sort -h | fuzzel --dmenu --prompt 'File > ')\""; }
+    Mod+Shift+g              { spawn-sh "xdg-open \"$(fd --exclude=.cache --exclude=.local --exclude=.conda --exclude=.mozilla --exclude=.config --exclude=.steam -HL . $HOME | sort -h | fuzzel --dmenu --prompt 'File > ')\""; }
+    Mod+e                    { spawn-sh "cat ~/.local/share/emojis.txt | fuzzel --dmenu --prompt 'Emoji > ' | cut -f 1 -d ' ' | wl-copy -n"; }
 
     Mod+Alt+p                { spawn "keepassxc" "~/.local/share/keepass/k.kdbx"; }
 
@@ -214,3 +223,5 @@ binds {
 
     Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
 }
+
+// include "colours.kdl"

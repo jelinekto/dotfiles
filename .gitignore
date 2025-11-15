@@ -36,6 +36,8 @@
 !/home/tomas/.config/*-flags.conf
 !/home/tomas/.config/fish
 !/home/tomas/.config/fish/**
+!/home/tomas/.config/fuzzel
+!/home/tomas/.config/fuzzel/**
 !/home/tomas/.config/gtk-3.0
 !/home/tomas/.config/gtk-3.0/**
 !/home/tomas/.config/hypr
@@ -82,5 +84,6 @@
 /home/tomas/.config/gtk-3.0/bookmarks
 colours
 colours.conf
+colours.ini
 colours.kdl
 fish_variables

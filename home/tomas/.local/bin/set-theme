@@ -1,5 +1,5 @@
 #!/bin/sh
-pidof -q niri && niri msg action do-screen-transition --delay-ms 50
+pidof -q niri && niri msg action do-screen-transition --delay-ms 100
 
 if [ "$1" = 'dark' ] || [ "$1" = 'light' ]; then
   scheme="$1"
@@ -33,6 +33,9 @@ pkill -USR1 kitty
 # mako
 ln -sf "${scheme}-colours" "${XDG_CONFIG_HOME}/mako/colours"
 makoctl reload
+
+# fuzzel
+ln -sf "${scheme}-colours.ini" "${XDG_CONFIG_HOME}/fuzzel/colours.ini"
 
 # niri
 ln -sf "${scheme}-colours.kdl" "${XDG_CONFIG_HOME}/niri/colours.kdl"

@@ -20,14 +20,12 @@ export NVD_BACKEND=direct
 export VDPAU_DRIVER=nvidia
 export __GLX_VENDOR_LIBRARY_NAME=nvidia
 
-# enable HDR
-export DXVK_HDR=1
-export ENABLE_HDR_WSI=1
-
-# Steam/Proton
+# HDR/Steam/Proton
+#export DXVK_HDR=1
+#export ENABLE_HDR_WSI=1
 export PROTON_DLSS_INDICATOR=1
 export PROTON_DLSS_UPGRADE=1
-export PROTON_ENABLE_HDR=1
+#export PROTON_ENABLE_HDR=1
 export PROTON_ENABLE_WAYLAND=1
 export PROTON_NO_WM_DECORATION=1
 export PROTON_NVIDIA_LIBS=1
