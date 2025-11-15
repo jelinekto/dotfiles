@@ -83,14 +83,10 @@ layout {
 
 cursor {
     xcursor-theme "breeze_cursors"
-    xcursor-size 28
+    xcursor-size 32
 
     hide-when-typing
     hide-after-inactive-ms 2000
-}
-
-clipboard {
-    disable-primary
 }
 
 spawn-sh-at-startup "set-theme dark"
@@ -111,8 +107,7 @@ animations {
 }
 
 window-rule {
-    match app-id=r#"firefox$"#
-    match at-startup=true
+    match app-id=r#"firefox$"# at-startup=true
     open-maximized true
     open-focused true
 }
@@ -186,13 +181,15 @@ binds {
     Mod+Shift+space          { toggle-window-floating; }
     Mod+MouseMiddle          { toggle-window-floating; }
 
-    Mod+w                    { toggle-column-tabbed-display; }
+    Mod+y                    { toggle-column-tabbed-display; }
 
     Mod+s                    { screenshot show-pointer=false; }
     Mod+Shift+s              { screenshot-screen; }
     Mod+Control+s            { screenshot-window; }
 
     Mod+v                    { spawn-sh "cliphist list | fuzzel --dmenu --prompt 'Clipboard item > ' | cliphist decode | wl-copy"; }
+
+    Mod+w                    { spawn-sh "niri msg action focus-window --id $(niri msg windows | awk '/^Window ID/ { if ($0 ~ / \\(focused\\)$/) { id = \"\" } else { sub(\":\", \"\", $3); id = $3 } } /^  Title:/ && id != \"\" { if (match($0, /\"([^\"]*)\"/, m)) print id \": \" m[1] }' | fuzzel --dmenu --prompt 'Window > ' | cut -f 1 -d ':') 2>/dev/null"; }
 
     Mod+Shift+p              { spawn "keepassxc-fuzzy"; }
 

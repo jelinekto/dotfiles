@@ -1,3 +1,5 @@
+doas systemctl start NetworkManager.service &
+
 export PATH=${PATH}:"${HOME}/.local/bin"
 
 export XDG_DATA_HOME="${HOME}/.local/share"
@@ -45,7 +47,6 @@ export GTK2_RC_FILES="${XDG_CONFIG_HOME}/gtk-2.0/gtkrc":"${XDG_CONFIG_HOME}/gtk-
 export ICEAUTHORITY="${XDG_CACHE_HOME}/ICEauthority"
 export KODI_DATA="${XDG_DATA_HOME}/kodi"
 export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
-export NUGET_PACKAGES="${XDG_CACHE_HOME}/NuGetPackages"
 export NUGET_PACKAGES="${XDG_CACHE_HOME}/NuGetPackages"
 export OLLAMA_MODELS="/var/lib/ollama"
 export PYTHONPYCACHEPREFIX="${XDG_CACHE_HOME}/python"

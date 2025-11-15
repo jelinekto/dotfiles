@@ -20,6 +20,12 @@
 !/etc/makepkg.conf
 !/etc/makepkg.conf.d
 !/etc/makepkg.conf.d/**
+!/etc/mkinitcpio.conf
+!/etc/mkinitcpio.conf.d
+!/etc/mkinitcpio.conf.d/**
+!/etc/mkinitcpio.d/
+!/etc/mkinitcpio.d/**
+!/etc/nvidia
 !/etc/nvidia
 !/etc/nvidia/nvidia-application-profiles-rc.d/
 !/etc/nvidia/nvidia-application-profiles-rc.d/50-limit-free-buffer-pool-in-wayland-compositors.json
