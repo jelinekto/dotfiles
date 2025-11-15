@@ -7,6 +7,7 @@ export XDG_STATE_HOME="${HOME}/.local/state"
 
 # GUI-specific
 export CLUTTER_BACKEND=wayland
+export ELECTRON_OZONE_PLATFORM_HINT=auto
 export GDK_BACKEND=wayland
 export QT_QPA_PLATFORM=wayland
 export QT_QPA_PLATFORMTHEME=kde
@@ -37,9 +38,6 @@ export DIFFPROG=nvimpager
 export EDITOR=nvim
 export PAGER=nvimpager
 
-# various fixes and stuff
-LS_COLORS='' # to make `fd` respect terminal colours
-
 # declutter home directory
 export ADB_VENDOR_KEYS="${XDG_DATA_HOME}/android"
 export CARGO_HOME="${XDG_DATA_HOME}/cargo"
@@ -57,16 +55,7 @@ export PYTHONUSERBASE="${XDG_DATA_HOME}/python"
 export PYTHON_HISTORY="${XDG_STATE_HOME}/python_history"
 export WGETRC="${XDG_CONFIG_HOME}/wgetrc"
 
-#if uwsm check may-start && [ ! -e ~/.cache/.hyprland_launched ]; then
-#  touch ~/.cache/.hyprland_launched
-#  exec uwsm start hyprland-uwsm.desktop
-#elif type fish 1>/dev/null 2>/dev/null; then
-#  exec fish
-#else
-#  exec bash
-#fi
-
-if ! pidof -q niri && [ ! -e ~/.cache/.niri_launched ]; then
-  touch ~/.cache/.niri_launched
+if ! pidof -q niri && [ ! -e "${XDG_CACHE_HOME}/.niri_launched" ]; then
+  touch "${XDG_CACHE_HOME}/.niri_launched"
   exec niri-session
 fi

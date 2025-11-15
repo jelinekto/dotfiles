@@ -6,7 +6,7 @@ input {
         }
         numlock
     }
-    focus-follows-mouse max-scroll-amount="100%"
+    focus-follows-mouse max-scroll-amount="0%"
     workspace-auto-back-and-forth
     disable-power-key-handling
 }
@@ -15,9 +15,10 @@ output "DP-1" {
     mode "3840x2160@144.00"
     scale 1.0
     position x=2560 y=0
+    variable-refresh-rate on-demand=true
     focus-at-startup
-    variable-refresh-rate
 }
+
 output "HDMI-A-1" {
     mode "2560x1440@74.78"
     position x=0 y=0
@@ -49,16 +50,11 @@ layout {
         width 4
     }
 
-    blur {
-        on
-    }
-
     border {
         off
         width 4
     }
 
-    // You can enable drop shadows for windows.
     shadow {
         on
         // draw-behind-window true
@@ -107,7 +103,7 @@ prefer-no-csd
 screenshot-path "~/Pictures/Screenshots/%Y-%m-%d %H-%M-%S.png"
 
 animations {
-    slowdown 0.8
+    slowdown 0.9
 }
 
 window-rule {
@@ -118,8 +114,6 @@ window-rule {
 window-rule {
     match app-id=r#"^org\.keepassxc\.KeePassXC$"#
     block-out-from "screen-capture"
-    // Use this instead if you want them visible on third-party screenshot tools.
-    // block-out-from "screencast"
 }
 
 window-rule {
@@ -128,92 +122,95 @@ window-rule {
 }
 
 binds {
-    Mod+return { spawn-sh "kitten @ --to unix:/tmp/kitty.socket launch --type=os-window --cwd=current || kitty --single-instance --listen-on unix:/tmp/kitty.socket"; }
-    Mod+o { spawn "wofi" "--show" "drun"; }
-    Mod+delete { spawn "hyprlock"; }
+    Mod+return               { spawn-sh "kitten @ --to unix:/tmp/kitty.socket launch --type=os-window --cwd=current || kitty --single-instance --listen-on unix:/tmp/kitty.socket"; }
+    Mod+o                    { spawn "wofi" "--show" "drun"; }
+    Mod+delete               { spawn "hyprlock"; }
 
-    Mod+left        { spawn-sh "ddcutil --bus 5 setvcp 10 - 5"; }
-    Mod+right       { spawn-sh "ddcutil --bus 5 setvcp 10 + 5"; }
-    Mod+Shift+left  { spawn-sh "ddcutil --bus 5 setvcp 10 0"; }
-    Mod+Shift+right { spawn-sh "ddcutil --bus 5 setvcp 10 100"; }
-    Mod+down        { spawn-sh "ddcutil --bus 4 setvcp 10 - 5"; }
-    Mod+up          { spawn-sh "ddcutil --bus 4 setvcp 10 + 5"; }
-    Mod+Shift+down  { spawn-sh "ddcutil --bus 4 setvcp 10 0"; }
-    Mod+Shift+up    { spawn-sh "ddcutil --bus 4 setvcp 10 100 "; }
-
-    Mod+Tab { toggle-overview; }
+    Mod+Tab                  { toggle-overview; }
 
     Mod+Shift+c repeat=false { close-window; }
 
-    Mod+h     { focus-column-left; }
-    Mod+j     { focus-window-down; }
-    Mod+k     { focus-window-up; }
-    Mod+l     { focus-column-right; }
+    Mod+h                    { focus-column-left; }
+    Mod+j                    { focus-window-down; }
+    Mod+k                    { focus-window-up; }
+    Mod+l                    { focus-column-right; }
 
-    Mod+Shift+h     { move-column-left; }
-    Mod+Shift+l     { move-column-right; }
-    Mod+Shift+j { move-column-to-workspace-down; }
-    Mod+Shift+k { move-column-to-workspace-up; }
+    Mod+Shift+h              { move-column-left; }
+    Mod+Shift+l              { move-column-right; }
+    Mod+Shift+j              { move-column-to-workspace-down; }
+    Mod+Shift+k              { move-column-to-workspace-up; }
 
-    Mod+Alt+j     { move-window-down; }
-    Mod+Alt+k     { move-window-up; }
-    Mod+Alt+h     { consume-or-expel-window-left; }
-    Mod+Alt+l     { consume-or-expel-window-right; }
+    Mod+Alt+j                { move-window-down; }
+    Mod+Alt+k                { move-window-up; }
+    Mod+Alt+h                { consume-or-expel-window-left; }
+    Mod+Alt+l                { consume-or-expel-window-right; }
 
-    Mod+Control+h { focus-column-first; }
-    Mod+Control+l { focus-column-last; }
+    Mod+Control+h            { focus-column-first; }
+    Mod+Control+l            { focus-column-last; }
 
-    Mod+i { focus-monitor-next; }
-    Mod+Shift+i  { move-window-to-monitor-next; }
-    Mod+Backslash  { move-workspace-to-monitor-next; }
+    Mod+i                    { focus-monitor-next; }
+    Mod+Shift+i              { move-window-to-monitor-next; }
+    Mod+Backslash            { move-workspace-to-monitor-next; }
 
-    Mod+Ctrl+j      { focus-workspace-down; }
-    Mod+Ctrl+k        { focus-workspace-up; }
+    Mod+Ctrl+j               { focus-workspace-down; }
+    Mod+Ctrl+k               { focus-workspace-up; }
+    Mod+WheelScrollDown      { focus-workspace-down; }
+    Mod+WheelScrollUp        { focus-workspace-up; }
 
-    MouseBack      { focus-column-right; }
-    MouseForward   { focus-column-left; }
-    Mod+MouseBack { move-column-right; }
-    Mod+MouseForward { move-column-left; }
+    MouseBack                { focus-column-right; }
+    MouseForward             { focus-column-left; }
+    Mod+MouseBack            { move-column-right; }
+    Mod+MouseForward         { move-column-left; }
 
-    Mod+bracketright { switch-preset-column-width; }
-    Mod+bracketleft { switch-preset-column-width-back; }
-    Mod+Shift+bracketleft { switch-preset-window-height; }
-    Mod+Shift+bracketright { switch-preset-window-height-back; }
+    Mod+bracketright         { switch-preset-column-width; }
+    Mod+bracketleft          { switch-preset-column-width-back; }
+    Mod+Shift+bracketleft    { switch-preset-window-height; }
+    Mod+Shift+bracketright   { switch-preset-window-height-back; }
 
-    Mod+m { maximize-column; }
-    Mod+f { fullscreen-window; }
-    Mod+c { center-column; }
-    Mod+Ctrl+c { center-visible-columns; }
+    Mod+m                    { maximize-column; }
+    Mod+f                    { fullscreen-window; }
+    Mod+Shift+f              { toggle-windowed-fullscreen; }
+    Mod+c                    { center-column; }
+    Mod+Ctrl+c               { center-visible-columns; }
 
-    Mod+Space { switch-focus-between-floating-and-tiling; }
-    Mod+Shift+space       { toggle-window-floating; }
-    Mod+MouseMiddle       { toggle-window-floating; }
+    Mod+Space                { switch-focus-between-floating-and-tiling; }
+    Mod+Shift+space          { toggle-window-floating; }
+    Mod+MouseMiddle          { toggle-window-floating; }
 
-    Mod+w { toggle-column-tabbed-display; }
+    Mod+w                    { toggle-column-tabbed-display; }
 
-    Mod+s { screenshot show-pointer=false; }
-    Mod+Shift+s { screenshot-screen; }
-    Mod+Control+s { screenshot-window; }
+    Mod+s                    { screenshot show-pointer=false; }
+    Mod+Shift+s              { screenshot-screen; }
+    Mod+Control+s            { screenshot-window; }
 
-    Mod+v { spawn-sh "cliphist list | wofi --dmenu --prompt 'Clipboard history' | cliphist decode | wl-copy"; }
+    Mod+v                    { spawn-sh "cliphist list | wofi --dmenu --prompt 'Clipboard history' | cliphist decode | wl-copy"; }
 
-    Mod+Shift+p { spawn "keepassxc-wofi"; }
+    Mod+Shift+p              { spawn "keepassxc-wofi"; }
 
-    Mod+n { spawn "makoctl dismiss"; }
-    Mod+Shift+n { spawn "makoctl dismiss -a"; }
-    Mod+d { spawn "notify-clock"; }
+    Mod+n                    { spawn "makoctl dismiss"; }
+    Mod+Shift+n              { spawn "makoctl dismiss -a"; }
+    Mod+d                    { spawn "notify-clock"; }
 
-    Mod+t { spawn "set-theme"; }
-    Mod+comma { spawn "wpaperctl" "previous"; }
-    Mod+period { spawn "wpaperctl" "next"; }
+    Mod+t                    { spawn "set-theme"; }
+    Mod+comma                { spawn "wpaperctl" "previous"; }
+    Mod+period               { spawn "wpaperctl" "next"; }
 
-    Mod+g { spawn-sh "xdg-open \"$(fd -L . $HOME | sort -h | wofi --prompt 'Open')\""; }
-    Mod+Shift+g { spawn-sh "xdg-open \"$(fd --exclude=.cache --exclude=.local --exclude=.conda --exclude=.mozilla --exclude=.config --exclude=.steam -HL . $HOME | sort -h | wofi --prompt 'Open')\""; }
-    Mod+e { spawn-sh "cat ~/.local/share/emojis.txt | wofi --prompt 'Select emoji' | cut -f 1 -d ' ' | wl-copy -n"; }
+    Mod+g                    { spawn-sh "xdg-open \"$(fd -L . $HOME | sort -h | wofi --prompt 'Open')\""; }
+    Mod+Shift+g              { spawn-sh "xdg-open \"$(fd --exclude=.cache --exclude=.local --exclude=.conda --exclude=.mozilla --exclude=.config --exclude=.steam -HL . $HOME | sort -h | wofi --prompt 'Open')\""; }
+    Mod+e                    { spawn-sh "cat ~/.local/share/emojis.txt | wofi --prompt 'Select emoji' | cut -f 1 -d ' ' | wl-copy -n"; }
+
+    Mod+Alt+p                { spawn "keepassxc" "~/.local/share/keepass/k.kdbx"; }
+
+    Mod+left                 { spawn-sh "ddcutil --bus 5 setvcp 10 - 5"; }
+    Mod+right                { spawn-sh "ddcutil --bus 5 setvcp 10 + 5"; }
+    Mod+Shift+left           { spawn-sh "ddcutil --bus 5 setvcp 10 0"; }
+    Mod+Shift+right          { spawn-sh "ddcutil --bus 5 setvcp 10 100"; }
+    Mod+down                 { spawn-sh "ddcutil --bus 4 setvcp 10 - 5"; }
+    Mod+up                   { spawn-sh "ddcutil --bus 4 setvcp 10 + 5"; }
+    Mod+Shift+down           { spawn-sh "ddcutil --bus 4 setvcp 10 0"; }
+    Mod+Shift+up             { spawn-sh "ddcutil --bus 4 setvcp 10 100 "; }
+
+    Ctrl+Alt+Delete          { quit; }
 
     Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
-
-    Mod+Alt+p { spawn "keepassxc" "~/.local/share/keepass/k.kdbx"; }
-
-    Ctrl+Alt+Delete { quit; }
 }
