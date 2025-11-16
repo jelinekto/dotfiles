@@ -27,8 +27,7 @@ output "HDMI-A-1" {
 layout {
     gaps 9
 
-    //center-focused-column "on-overflow"
-    center-focused-column "on-overflow"
+    center-focused-column "never"
     always-center-single-column
 
     preset-column-widths {
@@ -174,8 +173,7 @@ binds {
     Mod+m                    { maximize-column; }
     Mod+f                    { fullscreen-window; }
     Mod+Shift+f              { toggle-windowed-fullscreen; }
-    Mod+c                    { center-column; }
-    Mod+Ctrl+c               { center-visible-columns; }
+    Mod+c                    { center-visible-columns; }
 
     Mod+Space                { switch-focus-between-floating-and-tiling; }
     Mod+Shift+space          { toggle-window-floating; }

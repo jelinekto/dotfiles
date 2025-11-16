@@ -1,5 +1,3 @@
-doas systemctl start NetworkManager.service &
-
 export PATH=${PATH}:"${HOME}/.local/bin"
 
 export XDG_DATA_HOME="${HOME}/.local/share"
