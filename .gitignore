@@ -13,6 +13,8 @@
 !/etc/environment
 !/etc/fstab
 !/etc/hostname
+!/etc/initcpio
+!/etc/initcpio/**
 !/etc/lact
 !/etc/lact/**
 !/etc/locale.*

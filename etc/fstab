@@ -1,18 +1,21 @@
-/dev/disk/by-label/root    /btrfs                         btrfs noatime,subvolid=5        0 0
-/dev/disk/by-label/root    /home                          btrfs noatime,subvol=@home      0 0
-/dev/disk/by-label/root    /var/cache                     btrfs noatime,subvol=@cache     0 0
-/dev/disk/by-label/root    /var/log                       btrfs noatime,subvol=@log       0 0
-/dev/disk/by-label/root    /var/tmp                       btrfs noatime,subvol=@tmp       0 0
+/dev/disk/by-label/root    /btrfs                         btrfs noatime,subvolid=5             0 0
+/dev/disk/by-label/root    /home                          btrfs noatime,subvol=@home           0 0
+/dev/disk/by-label/root    /var/cache                     btrfs noatime,subvol=@cache          0 0
+/dev/disk/by-label/root    /var/log                       btrfs noatime,subvol=@log            0 0
+/dev/disk/by-label/root    /var/tmp                       btrfs noatime,subvol=@tmp            0 0
 
-/dev/disk/by-label/root    /home/tomas/Documents          btrfs noatime,subvol=@Documents 0 0
-/dev/disk/by-label/root    /home/tomas/Downloads          btrfs noatime,subvol=@Downloads 0 0
-/dev/disk/by-label/root    /home/tomas/LLMs               btrfs noatime,subvol=@LLMs      0 0
-/dev/disk/by-label/root    /home/tomas/Music              btrfs noatime,subvol=@Music     0 0
-/dev/disk/by-label/root    /home/tomas/Pictures           btrfs noatime,subvol=@Pictures  0 0
-/dev/disk/by-label/root    /home/tomas/Videos             btrfs noatime,subvol=@Videos    0 0
-/dev/disk/by-label/root    /home/tomas/VMs                btrfs noatime,subvol=@VMs       0 0
-/dev/disk/by-label/root    /home/tomas/.mozilla           btrfs noatime,subvol=@mozilla   0 0
-/dev/disk/by-label/root    /home/tomas/.thunderbird       btrfs noatime,subvol=@mozilla   0 0
-/dev/disk/by-label/root    /home/tomas/.local/share/Steam btrfs noatime,subvol=@Steam     0 0
+/dev/disk/by-label/root    /home/tomas/Documents          btrfs noatime,subvol=@Documents      0 0
+/dev/disk/by-label/root    /home/tomas/Downloads          btrfs noatime,subvol=@Downloads      0 0
+/dev/disk/by-label/root    /home/tomas/Images             btrfs noatime,subvol=@Images         0 0
+/dev/disk/by-label/root    /home/tomas/LLMs               btrfs noatime,subvol=@LLMs           0 0
+/dev/disk/by-label/root    /home/tomas/Music              btrfs noatime,subvol=@Music          0 0
+/dev/disk/by-label/root    /home/tomas/Pictures           btrfs noatime,subvol=@Pictures       0 0
+/dev/disk/by-label/root    /home/tomas/VMs                btrfs noatime,subvol=@VMs            0 0
+/dev/disk/by-label/root    /home/tomas/Videos             btrfs noatime,subvol=@Videos         0 0
+/dev/disk/by-label/root    /home/tomas/.conda             btrfs noatime,subvol=@opt            0 0
+/dev/disk/by-label/root    /home/tomas/.local/opt         btrfs noatime,subvol=@opt            0 0
+/dev/disk/by-label/root    /home/tomas/.local/share/Steam btrfs noatime,subvol=@Steam          0 0
+/dev/disk/by-label/root    /home/tomas/.mozilla           btrfs noatime,subvol=@mozilla        0 0
+/dev/disk/by-label/root    /home/tomas/.thunderbird       btrfs noatime,subvol=@mozilla        0 0
 
-/dev/disk/by-partlabel/esp /boot                          vfat  noatime                   0 0
+/dev/disk/by-partlabel/esp /boot                          vfat  noatime                        0 0

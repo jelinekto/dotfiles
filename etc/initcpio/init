@@ -1,0 +1,92 @@
+#!/usr/bin/sh
+export PATH='/usr/local/sbin:/usr/local/bin:/usr/bin'
+
+interactive_shell() {
+    export PS1='[rootfs \W]\$ '
+
+    # explicitly redirect to /dev/console in case we're logging. note that
+    # anything done in the rescue shell will NOT be logged.
+    {
+        [ "$1" = "--exec" ] && exec sh -i
+        sh -i
+    } 0</dev/console 1>/dev/console 2>/dev/console
+}
+
+# mount base filesystems
+mount -t proc proc /proc -o nosuid,noexec,nodev
+mount -t sysfs sys /sys -o nosuid,noexec,nodev
+[ mountpoint -q /dev ] || mount -t devtmpfs dev /dev -o mode=0755,nosuid
+mount -t tmpfs run /run -o nosuid,nodev,mode=0755
+mkdir -m755 /run/initramfs
+
+if [ -e /sys/firmware/efi ]; then
+    mount -t efivarfs efivarfs /sys/firmware/efi/efivars -o nosuid,nodev,noexec
+fi
+
+# set up /dev symlinks
+if [ -e /proc/kcore ]; then
+    ln -sfT /proc/kcore /dev/core
+fi
+ln -sfT /proc/self/fd /dev/fd
+ln -sfT /proc/self/fd/0 /dev/stdin
+ln -sfT /proc/self/fd/1 /dev/stdout
+ln -sfT /proc/self/fd/2 /dev/stderr
+
+# parse the kernel command line
+if read -r cmdline < /proc/cmdline; then
+    for arg in $cmdline; do
+        safe_arg="$(printf '%s\n' "$arg" | tr -c 'A-Za-z0-9_=[:space:]' '_')"
+
+        case $safe_arg in
+            [0-9]*)
+                safe_arg="_$safe_arg"
+                ;;
+        esac
+
+        case "$arg" in
+           *=*)
+               key=${safe_arg%%=*}
+               value=${arg#*=}
+               ;;
+           *)
+               key=${safe_arg}
+               value=${arg}
+               ;;
+        esac
+
+        export "$key"="$value"
+    done
+
+    unset safe_arg
+fi
+
+# load initcpio variables
+. /config
+
+# load kernel modules
+if [ ! -z "$MODULES" ]; then
+    modprobe -qab $MODULES
+fi
+
+# interactive shell
+if [ ! -z "$break" ]; then
+    echo "Interactive shell requested via cmdline!"
+    interactive_shell
+fi
+
+# mount & switch root
+mount -t "${rootfstype:-auto}" -o "${rw:-ro}${rootflags:+,$rootflags}" "$root" /new_root
+
+if ! mountpoint -q /new_root; then
+    echo "Failed to mount root device!"
+    interactive_shell
+fi
+
+if [ ! -x /new_root/sbin/init ]; then
+    echo "Rootfs mounted but no executable /new_root/sbin/init found!"
+    interactive_shell
+fi
+
+exec env -i \
+    "TERM=$TERM" \
+    /usr/bin/switch_root /new_root /new_root/sbin/init "$@"

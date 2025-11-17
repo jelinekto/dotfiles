@@ -18,7 +18,7 @@ gpus:
       spindown_delay_ms: 4960
       change_threshold: 2
       auto_threshold: 55
-    power_cap: 351.0
+    power_cap: 450.0
     gpu_clock_offsets:
       0: 110
     mem_clock_offsets:

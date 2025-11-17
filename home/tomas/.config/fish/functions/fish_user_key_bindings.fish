@@ -12,6 +12,13 @@ bind -M default alt-right nextd-or-forward-word
 bind -M default alt-backspace backward-kill-word
 bind -M default alt-delete  kill-word
 
+# system clipboard integration
+bind yy kill-whole-line yank yank_to_clipboard
+bind Y  kill-whole-line yank yank_to_clipboard
+bind -M visual -m default y kill-selection yank yank_to_clipboard end-selection repaint-mode
+bind p fish_clipboard_paste
+bind P fish_clipboard_paste
+
 # autopair
 set -g autopair_left "(" "[" "{" '"' "'"
 set -g autopair_right ")" "]" "}" '"' "'"
