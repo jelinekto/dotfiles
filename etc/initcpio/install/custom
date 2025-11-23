@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+build() {
+    # use Alpine's busybox, it contains kmod, mount etc.
+    add_binary /etc/initcpio/busybox /bin/busybox
+    local applet
+    for applet in $(/etc/initcpio/busybox --list); do
+        add_symlink "/usr/bin/$applet" busybox
+    done
+
+    add_binary "/etc/initcpio/init" "/init" 755
+}
+
+help() {
+    cat <<HELPEOF
+Custom super minimal hook based on Alpine's busybox.
+This only exists pretty much to load the nvme module.
+HELPEOF
+}
