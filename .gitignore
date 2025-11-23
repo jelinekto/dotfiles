@@ -7,7 +7,8 @@
 !/boot/loader/entries/**
 !/boot/loader/loader.conf
 !/etc
-!/etc
+!/etc/apparmor
+!/etc/apparmor/parser.conf
 !/etc/doas.conf
 !/etc/dracut*
 !/etc/environment
@@ -33,8 +34,16 @@
 !/etc/nvidia/nvidia-application-profiles-rc.d/50-limit-free-buffer-pool-in-wayland-compositors.json
 !/etc/pacman.conf
 !/etc/paru.conf
+!/etc/sdboot-manage.conf
+!/etc/sdboot-manage.conf.d
+!/etc/sdboot-manage.conf.d/**
+!/etc/tmpfiles.d
+!/etc/tmpfiles.d/**
 !/etc/ssh
 !/etc/ssh/sshd_config
+!/etc/sysctl.conf
+!/etc/sysctl.d
+!/etc/sysctl.d/**
 !/etc/systemd
 !/etc/systemd/**
 !/home
@@ -88,8 +97,9 @@
 !/usr/local/bin
 !/usr/local/bin/**
 
-/home/tomas/.config/mpv/watch_later/**
+/etc/initcpio/busybox
 /home/tomas/.config/gtk-3.0/bookmarks
+/home/tomas/.config/mpv/watch_later/**
 colours
 colours.conf
 colours.ini

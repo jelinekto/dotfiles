@@ -1,5 +1,6 @@
 #!/usr/bin/sh
 export PATH='/usr/local/sbin:/usr/local/bin:/usr/bin'
+. /config
 
 interactive_shell() {
     export PS1='[rootfs \W]\$ '
@@ -60,9 +61,6 @@ if read -r cmdline < /proc/cmdline; then
     unset safe_arg
 fi
 
-# load initcpio variables
-. /config
-
 # load kernel modules
 if [ ! -z "$MODULES" ]; then
     modprobe -qab $MODULES
@@ -89,4 +87,4 @@ fi
 
 exec env -i \
     "TERM=$TERM" \
-    /usr/bin/switch_root /new_root /new_root/sbin/init "$@"
+    /usr/bin/switch_root /new_root "${init:-/sbin/init}" "$@"
