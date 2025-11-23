@@ -12,6 +12,20 @@ bind -M default alt-right nextd-or-forward-word
 bind -M default alt-backspace backward-kill-word
 bind -M default alt-delete  kill-word
 
+# Ctrl+j/k cycles through pager items
+for mode in insert default
+  bind -M $mode \cj 'if commandline --paging-mode
+                       commandline -f down-line
+                     else
+                       commandline -f down-or-search
+                     end'
+  bind -M $mode \ck 'if commandline --paging-mode
+                       commandline -f up-line
+                     else
+                       commandline -f up-or-search
+                     end'
+end
+
 # system clipboard integration
 bind yy kill-whole-line yank yank_to_clipboard
 bind Y  kill-whole-line yank yank_to_clipboard
