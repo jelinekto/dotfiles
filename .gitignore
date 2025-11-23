@@ -37,8 +37,6 @@
 !/etc/sdboot-manage.conf
 !/etc/sdboot-manage.conf.d
 !/etc/sdboot-manage.conf.d/**
-!/etc/tmpfiles.d
-!/etc/tmpfiles.d/**
 !/etc/ssh
 !/etc/ssh/sshd_config
 !/etc/sysctl.conf
@@ -46,6 +44,11 @@
 !/etc/sysctl.d/**
 !/etc/systemd
 !/etc/systemd/**
+!/etc/tmpfiles.d
+!/etc/tmpfiles.d/**
+!/etc/udev
+!/etc/udev/rules.d
+!/etc/udev/rules.d/**
 !/home
 !/home/tomas
 !/home/tomas/.cache
