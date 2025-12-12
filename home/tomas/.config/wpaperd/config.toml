@@ -1,6 +1,1 @@
-[default]
-duration = "60m"
-mode = "center"
-sorting = "random"
-path = "/home/tomas/Pictures/Wallpapers"
-group = 1
+light.toml

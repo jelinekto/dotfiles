@@ -25,7 +25,7 @@ output "HDMI-A-1" {
 }
 
 layout {
-    gaps 12
+    gaps 14
 
     center-focused-column "never"
     always-center-single-column
@@ -48,9 +48,6 @@ layout {
     focus-ring {
         off
         width 3
-        active-color "#3DAEE9"
-        inactive-color "#1B4155"
-        urgent-color "#F2777A"
     }
 
     border {
@@ -69,6 +66,8 @@ layout {
     struts {
         left 0
         right 0
+        top 0
+        bottom 0
     }
 
     tab-indicator {
@@ -77,10 +76,6 @@ layout {
         length total-proportion=1.00
         position "right"
         place-within-column
-
-        active-color "#3DAEE9"
-        inactive-color "#1D1F22"
-        urgent-color "#F2777A"
     }
 }
 
@@ -93,6 +88,8 @@ cursor {
 }
 
 spawn-sh-at-startup "set-theme dark"
+
+spawn-at-startup "i3bar-river"
 
 spawn-at-startup "firefox"
 spawn-at-startup "thunderbird"
@@ -111,12 +108,17 @@ animations {
 
 window-rule {
     match app-id=r#"firefox$"# at-startup=true
-    open-maximized true
+    default-column-width { proportion 0.98; }
     open-focused true
 }
 
 window-rule {
     match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    open-floating true
+}
+
+window-rule {
+    match app-id=r#"firefox$"# title="^Library$"
     open-floating true
 }
 
@@ -128,6 +130,22 @@ window-rule {
 window-rule {
     geometry-corner-radius 10
     clip-to-geometry true
+}
+
+layer-rule {
+    match namespace="^i3bar-river$"
+    shadow {
+        on
+    }
+    geometry-corner-radius 0
+}
+
+layer-rule {
+    match namespace="^launcher$"
+    shadow {
+        on
+    }
+    geometry-corner-radius 10
 }
 
 binds {
@@ -175,6 +193,7 @@ binds {
     Mod+Shift+bracketright   { switch-preset-window-height-back; }
 
     Mod+m                    { maximize-column; }
+    Mod+Shift+m              { maximize-window-to-edges; }
     Mod+f                    { fullscreen-window; }
     Mod+Shift+f              { toggle-windowed-fullscreen; }
     Mod+c                    { center-visible-columns; }
@@ -188,6 +207,8 @@ binds {
     Mod+s                    { screenshot show-pointer=false; }
     Mod+Shift+s              { screenshot-screen; }
     Mod+Control+s            { screenshot-window; }
+
+    Mod+b                    { spawn-sh "pkill i3bar-river || i3bar-river-themed"; }
 
     Mod+v                    { spawn-sh "cliphist list | fuzzel --dmenu --prompt 'Clipboard item > ' | cliphist decode | wl-copy"; }
 
@@ -209,18 +230,18 @@ binds {
 
     Mod+Alt+p                { spawn "keepassxc" "~/.local/share/keepass/k.kdbx"; }
 
-    Mod+left                 { spawn-sh "ddcutil --bus 5 setvcp 10 - 5"; }
-    Mod+right                { spawn-sh "ddcutil --bus 5 setvcp 10 + 5"; }
-    Mod+Shift+left           { spawn-sh "ddcutil --bus 5 setvcp 10 0"; }
-    Mod+Shift+right          { spawn-sh "ddcutil --bus 5 setvcp 10 100"; }
-    Mod+down                 { spawn-sh "ddcutil --bus 4 setvcp 10 - 5"; }
-    Mod+up                   { spawn-sh "ddcutil --bus 4 setvcp 10 + 5"; }
-    Mod+Shift+down           { spawn-sh "ddcutil --bus 4 setvcp 10 0"; }
-    Mod+Shift+up             { spawn-sh "ddcutil --bus 4 setvcp 10 100 "; }
+    Mod+left                 { spawn-sh "ddcutil --bus 5 --disable-dynamic-sleep --sleep-multiplier=0.01 --maxtries=1,1,1 setvcp 10 - 5 && pkill -RTMIN+10 i3status-rs"; }
+    Mod+right                { spawn-sh "ddcutil --bus 5 --disable-dynamic-sleep --sleep-multiplier=0.01 --maxtries=1,1,1 setvcp 10 + 5 && pkill -RTMIN+10 i3status-rs"; }
+    Mod+Shift+left           { spawn-sh "ddcutil --bus 5 --disable-dynamic-sleep --sleep-multiplier=0.01 --maxtries=1,1,1 setvcp 10 0   && pkill -RTMIN+10 i3status-rs"; }
+    Mod+Shift+right          { spawn-sh "ddcutil --bus 5 --disable-dynamic-sleep --sleep-multiplier=0.01 --maxtries=1,1,1 setvcp 10 100 && pkill -RTMIN+10 i3status-rs"; }
+    Mod+down                 { spawn-sh "ddcutil --bus 4 --disable-dynamic-sleep --sleep-multiplier=0.09 --maxtries=1,1,1 setvcp 10 - 5 && pkill -RTMIN+10 i3status-rs"; }
+    Mod+up                   { spawn-sh "ddcutil --bus 4 --disable-dynamic-sleep --sleep-multiplier=0.09 --maxtries=1,1,1 setvcp 10 + 5 && pkill -RTMIN+10 i3status-rs"; }
+    Mod+Shift+down           { spawn-sh "ddcutil --bus 4 --disable-dynamic-sleep --sleep-multiplier=0.09 --maxtries=1,1,1 setvcp 10 0   && pkill -RTMIN+10 i3status-rs"; }
+    Mod+Shift+up             { spawn-sh "ddcutil --bus 4 --disable-dynamic-sleep --sleep-multiplier=0.09 --maxtries=1,1,1 setvcp 10 100 && pkill -RTMIN+10 i3status-rs"; }
 
     Ctrl+Alt+Delete          { quit; }
 
     Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
 }
 
-// include "colours.kdl"
+include "colours.kdl"

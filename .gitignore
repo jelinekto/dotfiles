@@ -34,6 +34,8 @@
 !/etc/nvidia/nvidia-application-profiles-rc.d/50-limit-free-buffer-pool-in-wayland-compositors.json
 !/etc/pacman.conf
 !/etc/paru.conf
+!/etc/searxng
+!/etc/searxng/settings.yml
 !/etc/sdboot-manage.conf
 !/etc/sdboot-manage.conf.d
 !/etc/sdboot-manage.conf.d/**
@@ -46,6 +48,8 @@
 !/etc/systemd/**
 !/etc/tmpfiles.d
 !/etc/tmpfiles.d/**
+!/etc/tor
+!/etc/tor/torrc
 !/etc/udev
 !/etc/udev/rules.d
 !/etc/udev/rules.d/**
@@ -62,6 +66,10 @@
 !/home/tomas/.config/gtk-3.0/**
 !/home/tomas/.config/hypr
 !/home/tomas/.config/hypr/**
+!/home/tomas/.config/i3bar-river
+!/home/tomas/.config/i3bar-river/**
+!/home/tomas/.config/i3blocks
+!/home/tomas/.config/i3blocks/**
 !/home/tomas/.config/kitty
 !/home/tomas/.config/kitty/**
 !/home/tomas/.config/mako
@@ -103,6 +111,7 @@
 /etc/initcpio/busybox
 /home/tomas/.config/gtk-3.0/bookmarks
 /home/tomas/.config/mpv/watch_later/**
+/home/tomas/.config/wpaperd/config.toml
 colours
 colours.conf
 colours.ini

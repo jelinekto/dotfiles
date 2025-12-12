@@ -1,0 +1,19 @@
+User tor
+Log notice syslog
+DataDirectory /var/lib/tor
+SocksPort 127.0.0.1:9050 IsolateClientAddr IsolateSOCKSAuth IsolateClientProtocol IsolateDestPort IsolateDestAddr
+ORPort 0
+DirPort 0
+ExitRelay 0
+PublishServerDescriptor 0
+ExitPolicy reject *:*
+ClientOnly 1
+SafeSocks 1
+TestSocks 1
+AvoidDiskWrites 1
+SafeLogging 1
+Sandbox 1
+NoExec 1
+DisableDebuggerAttachment 1
+NewCircuitPeriod 30
+MaxCircuitDirtiness 30

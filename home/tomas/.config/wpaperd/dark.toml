@@ -1,0 +1,7 @@
+[default]
+duration = "60m"
+mode = "center"
+sorting = "random"
+queue-size = 1
+path = "/home/tomas/Pictures/Wallpapers/dark"
+group = 1

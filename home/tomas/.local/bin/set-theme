@@ -1,5 +1,5 @@
 #!/bin/sh
-pidof -q niri && niri msg action do-screen-transition --delay-ms 100
+pidof -q niri && niri msg action do-screen-transition --delay-ms 300
 
 if [ "$1" = 'dark' ] || [ "$1" = 'light' ]; then
   scheme="$1"
@@ -36,6 +36,16 @@ makoctl reload
 
 # fuzzel
 ln -sf "${scheme}-colours.ini" "${XDG_CONFIG_HOME}/fuzzel/colours.ini"
+
+# i3bar-river
+if pidof -q i3bar-river; then
+  pkill i3bar-river
+  i3bar-river-themed &
+fi
+
+# wpaperd
+ln -sf "${scheme}.toml" "${XDG_CONFIG_HOME}/wpaperd/config.toml"
+systemctl --user restart wpaperd.service
 
 # niri
 ln -sf "${scheme}-colours.kdl" "${XDG_CONFIG_HOME}/niri/colours.kdl"
