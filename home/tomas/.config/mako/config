@@ -1,12 +1,13 @@
-anchor=bottom-right
+anchor=top-right
 border-radius=10
-border-size=3
+border-size=2
 default-timeout=30000
 font=Ubuntu 22
 height=300
 max-history=100
 on-button-middle=dismiss-all
 outer-margin=25
+margin=0
 padding=8
 width=600
 

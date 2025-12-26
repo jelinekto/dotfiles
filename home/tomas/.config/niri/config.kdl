@@ -140,7 +140,7 @@ layer-rule {
 }
 
 layer-rule {
-    match namespace="^launcher$"
+    match namespace="^launcher$|^notifications$"
     shadow {
         on
     }
@@ -215,9 +215,8 @@ binds {
 
     Mod+Shift+p              { spawn "keepassxc-fuzzy"; }
 
-    Mod+n                    { spawn "makoctl dismiss"; }
-    Mod+Shift+n              { spawn "makoctl dismiss -a"; }
-    Mod+d                    { spawn "notify-clock"; }
+    Mod+n                    { spawn-sh "makoctl dismiss"; }
+    Mod+Shift+n              { spawn-sh "makoctl dismiss -a"; }
 
     Mod+t                    { spawn "set-theme"; }
     Mod+comma                { spawn "wpaperctl" "previous"; }
