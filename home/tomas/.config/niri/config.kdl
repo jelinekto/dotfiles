@@ -22,10 +22,11 @@ output "DP-1" {
 output "HDMI-A-1" {
     mode "2560x1440@74.78"
     position x=0 y=0
+    scale 0.79
 }
 
 layout {
-    gaps 14
+    gaps 12
 
     center-focused-column "never"
     always-center-single-column
@@ -47,19 +48,17 @@ layout {
 
     focus-ring {
         off
-        width 3
     }
 
     border {
         off
-        width 4
     }
 
     shadow {
         on
-        // draw-behind-window true
+        draw-behind-window false
         softness 5
-        spread 3
+        spread 2
         offset x=0 y=0
     }
 
@@ -81,7 +80,7 @@ layout {
 
 cursor {
     xcursor-theme "breeze_cursors"
-    xcursor-size 32
+    xcursor-size 34
 
     hide-when-typing
     hide-after-inactive-ms 2000
