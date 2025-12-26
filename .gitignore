@@ -58,6 +58,8 @@
 !/home/tomas/.cache
 !/home/tomas/.config
 !/home/tomas/.config/*-flags.conf
+!/home/tomas/.config/firefox
+!/home/tomas/.config/firefox/**
 !/home/tomas/.config/fish
 !/home/tomas/.config/fish/**
 !/home/tomas/.config/fuzzel
